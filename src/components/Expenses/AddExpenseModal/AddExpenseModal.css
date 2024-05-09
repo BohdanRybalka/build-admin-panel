@@ -1,27 +1,38 @@
+.modal-content {
+    width: 80vw;
+    height: 80vh;
+    max-width: 600px;
+    max-height: 600px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 .modal-header {
-    font-size: var(--chakra-fontSizes-2xl);
+    margin-top: 1vh;
+    font-size: var(--chakra-fontSizes-2xl) !important;
     color: var(--chakra-colors-grey-900);
 }
 
 .modal-body {
-    font-size: var(--chakra-fontSizes-md);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: var(--chakra-fontSizes-lg) !important;
     color: var(--chakra-colors-grey-900);
 }
 
 .form-label {
-    font-size: var(--chakra-fontSizes-md);
+    font-size: var(--chakra-fontSizes-lg) !important;
     color: var(--chakra-colors-grey-900);
 }
 
 .input-field {
-    font-size: var(--chakra-fontSizes-md);
+    font-size: var(--chakra-fontSizes-lg) !important;
     color: var(--chakra-colors-grey-900);
     border: 1px solid var(--chakra-colors-grey-600);
-}
-
-.save-button {
-    background-color: var(--chakra-colors-blue-700);
-    color: var(--chakra-colors-grey-100);
 }
 
 .cancel-button {

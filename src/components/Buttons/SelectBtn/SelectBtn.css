@@ -5,6 +5,7 @@
     padding: var(--chakra-space-7);
     margin-left: var(--chakra-space-4);
     background-color: var(--chakra-colors-green-400) !important;
+    width: 15vh;
 }
 
 .select-btn:hover {

@@ -1,0 +1,9 @@
+.save-button {
+    background-color: var(--chakra-colors-yellow-300) !important;
+    color: var(--chakra-colors-grey-900) !important;
+    width: 10vh;
+}
+
+.save-button:hover {
+    background-color: var(--chakra-colors-yellow-400) !important;
+}

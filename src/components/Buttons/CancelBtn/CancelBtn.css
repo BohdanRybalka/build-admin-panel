@@ -1,0 +1,9 @@
+.cancel-button {
+    background-color: var(--chakra-colors-grey-300) !important;
+    color: var(--chakra-colors-grey-900) !important;
+    width: 10vh;
+}
+
+.cancel-button:hover {
+    background-color: var(--chakra-colors-grey-400) !important;
+}

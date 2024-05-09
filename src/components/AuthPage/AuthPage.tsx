@@ -9,6 +9,7 @@ import {
 } from "@chakra-ui/react";
 import logo from '../../assets/companyLogo/companyLogo.png';
 import './AuthPage.css';
+import {CSSTransition, SwitchTransition} from 'react-transition-group';
 
 export default function AuthPage() {
     const [authMode, setAuthMode] = useState('login');
@@ -96,15 +97,27 @@ export default function AuthPage() {
                                onChange={(e) => setPassword(e.target.value)} onInput={() => setPasswordError('')}/>
                         <FormErrorMessage>{passwordError}</FormErrorMessage>
                     </FormControl>
-                    {authMode === 'register' && (
-                        <FormControl mt={4} isInvalid={!!confirmPasswordError}>
-                            <FormLabel>Confirm Password</FormLabel>
-                            <Input className="input-field" type="password" placeholder="Confirm your password"
-                                   value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}
-                                   onInput={() => setConfirmPasswordError('')}/>
-                            <FormErrorMessage>{confirmPasswordError}</FormErrorMessage>
-                        </FormControl>
-                    )}
+                    <SwitchTransition>
+                        <CSSTransition
+                            key={authMode}
+                            addEndListener={(node: HTMLElement, done: () => void) => {
+                                node.addEventListener("transitionend", done, false);
+                            }}
+                            classNames='fade'
+                        >
+                            {authMode === 'register' ? (
+                                <FormControl mt={4} isInvalid={!!confirmPasswordError}>
+                                    <FormLabel>Confirm Password</FormLabel>
+                                    <Input className="input-field" type="password" placeholder="Confirm your password"
+                                           value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}
+                                           onInput={() => setConfirmPasswordError('')}/>
+                                    <FormErrorMessage>{confirmPasswordError}</FormErrorMessage>
+                                </FormControl>
+                            ) : (
+                                <></> // Return an empty React.Fragment when authMode is not 'register'
+                            )}
+                        </CSSTransition>
+                    </SwitchTransition>
                     <Button className="auth-button" onClick={handleSubmit}>
                         {authMode === 'login' ? 'Login' : 'Register'}
                     </Button>

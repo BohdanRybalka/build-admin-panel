@@ -16,6 +16,10 @@
     margin-right: var(--chakra-space-4);
 }
 
+.expense-icon {
+    margin-right: 28px;
+}
+
 .table-content {
     font-size: var(--chakra-fontSizes-lg);
     font-family: var(--chakra-fonts-body);
@@ -26,11 +30,12 @@
 }
 
 .checkbox {
+    padding: 1.5vh;
     border-color: var(--chakra-colors-grey-700);
 }
 
 .checkbox:hover {
-    background-color: var(--chakra-colors-grey-500);
+    border-color: var(--chakra-colors-yellow-200);
 }
 
 .select-column {
@@ -40,4 +45,8 @@
 .table-header {
     font-family: var(--chakra-fonts-body);
     font-size: var(--chakra-fontSizes-md) !important;
+}
+
+.expense-name {
+    font-size: var(--chakra-fontSizes-xl);
 }

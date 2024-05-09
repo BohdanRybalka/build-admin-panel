@@ -4,7 +4,8 @@
     border-radius: var(--chakra-radii-lg);
     padding: var(--chakra-space-7);
     margin-left: var(--chakra-space-4);
-    background-color: var(--chakra-colors-yellow-300) !important
+    background-color: var(--chakra-colors-yellow-300) !important;
+    width: 15vh;
 }
 
 .add-button:hover {
