@@ -1,0 +1,28 @@
+.home-container {
+    width: 100%;
+}
+
+.home-title {
+    font-size: var(--chakra-fontSizes-2xl);
+    font-weight: bold;
+    color: var(--chakra-colors-blue-900);
+    margin-bottom: var(--chakra-space-5);
+}
+
+.home-content {
+    font-size: var(--chakra-fontSizes-md);
+    color: var(--chakra-colors-grey-900);
+    line-height: 1.5;
+}
+
+.home-box {
+    font-size: var(--chakra-fontSizes-md);
+    color: var(--chakra-colors-grey-800);
+    line-height: 1.5;
+    background-color: var(--chakra-colors-grey-400);
+    border-radius: var(--chakra-radii-2xl);
+    padding: var(--chakra-space-10);
+    margin-top: var(--chakra-space-4);
+    margin-left: var(--chakra-space-4); /* Add left margin */
+    margin-right: var(--chakra-space-4); /* Add right margin */
+}

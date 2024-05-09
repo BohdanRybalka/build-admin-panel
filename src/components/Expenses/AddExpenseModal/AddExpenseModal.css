@@ -1,0 +1,30 @@
+.modal-header {
+    font-size: var(--chakra-fontSizes-2xl);
+    color: var(--chakra-colors-grey-900);
+}
+
+.modal-body {
+    font-size: var(--chakra-fontSizes-md);
+    color: var(--chakra-colors-grey-900);
+}
+
+.form-label {
+    font-size: var(--chakra-fontSizes-md);
+    color: var(--chakra-colors-grey-900);
+}
+
+.input-field {
+    font-size: var(--chakra-fontSizes-md);
+    color: var(--chakra-colors-grey-900);
+    border: 1px solid var(--chakra-colors-grey-600);
+}
+
+.save-button {
+    background-color: var(--chakra-colors-blue-700);
+    color: var(--chakra-colors-grey-100);
+}
+
+.cancel-button {
+    background-color: var(--chakra-colors-grey-300);
+    color: var(--chakra-colors-grey-900);
+}

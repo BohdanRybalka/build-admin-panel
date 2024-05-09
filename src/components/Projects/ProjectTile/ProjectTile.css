@@ -1,0 +1,42 @@
+.project-tile {
+    border-radius: var(--chakra-radii-md);
+    padding: var(--chakra-space-6);
+    background-color: var(--chakra-colors-grey-200);
+    box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+    position: relative;
+}
+
+.project-tile:hover {
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+.project-image-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 1%;
+}
+
+.project-image {
+    max-width: 60%;
+    max-height: 60%;
+}
+
+.project-info {
+    width: 70%;
+    padding: var(--chakra-space-4);
+    font-family: var(--chakra-fonts-body);
+}
+
+.project-info h3 {
+    margin-bottom: var(--chakra-space-4);
+}
+
+.project-checkbox {
+    position: absolute;
+    right: 5%;
+    bottom: 12%;
+    transform: scale(1.8);
+    border-color: var(--chakra-colors-grey-400);
+}

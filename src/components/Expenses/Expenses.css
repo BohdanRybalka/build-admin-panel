@@ -1,0 +1,43 @@
+.expenses-content {
+    font-size: var(--chakra-fontSizes-md);
+    color: var(--chakra-colors-grey-900);
+    line-height: 1.5;
+}
+
+.expenses-box {
+    font-size: var(--chakra-fontSizes-md);
+    color: var(--chakra-colors-grey-900);
+    line-height: 1.5;
+    background-color: var(--chakra-colors-grey-400);
+    border-radius: var(--chakra-radii-2xl);
+    padding: var(--chakra-space-10);
+    margin-top: var(--chakra-space-4);
+    margin-left: var(--chakra-space-4);
+    margin-right: var(--chakra-space-4);
+}
+
+.table-content {
+    font-size: var(--chakra-fontSizes-lg);
+    font-family: var(--chakra-fonts-body);
+}
+
+.expenses-table {
+    border: 5px solid var(--chakra-colors-grey-600);
+}
+
+.checkbox {
+    border-color: var(--chakra-colors-grey-700);
+}
+
+.checkbox:hover {
+    background-color: var(--chakra-colors-grey-500);
+}
+
+.select-column {
+    width: 30px;
+}
+
+.table-header {
+    font-family: var(--chakra-fonts-body);
+    font-size: var(--chakra-fontSizes-md) !important;
+}

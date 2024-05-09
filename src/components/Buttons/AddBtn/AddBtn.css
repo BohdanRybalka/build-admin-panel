@@ -1,0 +1,12 @@
+.add-button {
+    color: var(--chakra-colors-grey-50);
+    font-size: var(--chakra-fontSizes-lg);
+    border-radius: var(--chakra-radii-lg);
+    padding: var(--chakra-space-7);
+    margin-left: var(--chakra-space-4);
+    background-color: var(--chakra-colors-yellow-300) !important
+}
+
+.add-button:hover {
+    background-color: var(--chakra-colors-yellow-400) !important;
+}

@@ -1,0 +1,76 @@
+.auth-page {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100vh;
+    padding: 25%;
+    background-color: var(--chakra-colors-grey-500);
+}
+
+.auth-form {
+    width: 45vh;
+    height: 55vh;
+    background-color: var(--chakra-colors-grey-200);
+    border-radius: var(--chakra-radii-2xl);
+}
+
+.auth-logo {
+    width: 20vw;
+    height: auto;
+}
+
+.auth-buttons {
+    display: flex;
+}
+
+.auth-mode-button {
+    width: 50%;
+    height: 3.5vh !important;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: var(--chakra-colors-grey-400) !important;
+    border-radius: 0 !important;
+}
+
+.left {
+    border-top-left-radius: var(--chakra-radii-2xl) !important;
+}
+
+.right {
+    border-top-right-radius: var(--chakra-radii-2xl) !important;
+}
+
+.auth-mode-button.active {
+    background-color: var(--chakra-colors-yellow-200) !important;
+}
+
+.auth-button {
+    background-color: var(--chakra-colors-yellow-300) !important;
+    padding: 8% 20% !important;
+    margin-top: 15%;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    border-radius: var(--chakra-radii-xl) !important;
+}
+
+.auth-button:hover {
+    background-color: var(--chakra-colors-yellow-500) !important;
+}
+
+.auth-button:active {
+    transform: scale(0.95);
+}
+
+.auth-form-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-left: 20%;
+    padding-right: 20%;
+}
+
+.input-field {
+    font-size: var(--chakra-fontSizes-md);
+    color: var(--chakra-colors-grey-900);
+    border: 1px solid var(--chakra-colors-grey-400);
+    box-shadow: 0 0 0 2px var(--chakra-colors-grey-400); /* Додає постійне підсвічування покраях */
+}
