@@ -63,7 +63,7 @@ export default function AuthPage() {
         return isValid;
     };
 
-    const handleSubmit = async () => { // Зробіть цю функцію асинхронною
+    const handleSubmit = async () => {
         if (validateForm()) {
             if (authMode === 'register') {
                 try {
@@ -74,8 +74,17 @@ export default function AuthPage() {
                     console.error('An error occurred while registering the user', axiosError);
                     console.error('Error details:', axiosError.message, axiosError.code, axiosError.config, axiosError.request);
                 }
+            } else if (authMode === 'login') {
+                try {
+                    const response = await axios.post('http://localhost:4000/login', {username: email, password});
+                    localStorage.setItem('token', response.data.token);
+                    navigate('/');
+                } catch (error) {
+                    const axiosError = error as AxiosError;
+                    console.error('An error occurred while logging in', axiosError);
+                    console.error('Error details:', axiosError.message, axiosError.code, axiosError.config, axiosError.request);
+                }
             }
-            // ... код для входу ...
         }
     };
 
