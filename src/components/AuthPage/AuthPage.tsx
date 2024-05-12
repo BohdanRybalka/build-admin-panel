@@ -10,6 +10,9 @@ import {
 import logo from '../../assets/companyLogo/companyLogo.png';
 import './AuthPage.css';
 import {CSSTransition, SwitchTransition} from 'react-transition-group';
+import axios, {AxiosError} from "axios";
+import {useNavigate} from 'react-router-dom';
+
 
 export default function AuthPage() {
     const [authMode, setAuthMode] = useState('login');
@@ -20,6 +23,8 @@ export default function AuthPage() {
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
     const [confirmPasswordError, setConfirmPasswordError] = useState('');
+
+    const navigate = useNavigate();
 
     const handleButtonClick = (mode: string) => {
         setAuthMode(mode);
@@ -58,9 +63,19 @@ export default function AuthPage() {
         return isValid;
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => { // Зробіть цю функцію асинхронною
         if (validateForm()) {
-            // Submit form
+            if (authMode === 'register') {
+                try {
+                    await axios.post('http://localhost:4000/register', {username: email, password});
+                    navigate('/');
+                } catch (error) {
+                    const axiosError = error as AxiosError;
+                    console.error('An error occurred while registering the user', axiosError);
+                    console.error('Error details:', axiosError.message, axiosError.code, axiosError.config, axiosError.request);
+                }
+            }
+            // ... код для входу ...
         }
     };
 
