@@ -2,7 +2,12 @@ import express, {Request, Response, NextFunction} from 'express';
 import User from './models/User';
 import connectDB from './db';
 import cors from 'cors';
-import jwt from 'jsonwebtoken';
+import jwt, {JwtPayload} from 'jsonwebtoken';
+import bcrypt from "bcrypt";
+import dotenv from 'dotenv';
+import {VerifyErrors} from 'jsonwebtoken';
+
+dotenv.config();
 
 const app = express();
 
@@ -20,23 +25,27 @@ connectDB().then(() => {
     console.error('Error establishing database connection', error);
 });
 
-app.get('/', (req, res) => {
-    res.send('Hello, world!');
-});
-
 app.post('/login', async (req, res) => {
     const {username, password} = req.body;
 
-    // Перевірте, чи користувач існує і чи пароль вірний
     const user = await User.findOne({username});
-    if (!user || user.password !== password) {
+    if (!user) {
         return res.status(400).send({message: 'Invalid username or password'});
     }
 
-    // Створіть токен
-    const token = jwt.sign({id: user._id}, 'your-secret-key', {expiresIn: '1h'});
+    if (!user.password) {
+        return res.status(400).send({message: 'Invalid username or password'});
+    }
+    const isPasswordCorrect = await bcrypt.compare(password, user.password);
+    if (!isPasswordCorrect) {
+        return res.status(400).send({message: 'Invalid username or password'});
+    }
 
-    // Відправте токен клієнту
+    if (!process.env.JWT_SECRET_KEY) {
+        return res.status(500).send({message: 'JWT secret key is not set'});
+    }
+    const token = jwt.sign({id: user._id}, process.env.JWT_SECRET_KEY, {expiresIn: '1h'});
+
     res.send({token});
 });
 
@@ -54,19 +63,63 @@ app.post('/register', async (req, res) => {
 
         await user.save();
 
-        res.send({message: 'User registered successfully'});
+        if (!process.env.JWT_SECRET_KEY) {
+            return res.status(500).send({message: 'JWT secret key is not set'});
+        }
+        const token = jwt.sign({id: user._id}, process.env.JWT_SECRET_KEY, {expiresIn: '1h'});
+
+        res.send({token, message: 'User registered successfully'});
     } catch (error) {
         console.error('An error occurred while registering the user', error);
         res.status(500).send({message: 'An error occurred while registering the user'});
     }
 });
 
-// Middleware для перевірки токену
+app.get('/api/user', async (req, res) => {
+    const authHeader = req.headers.authorization;
+    if (authHeader) {
+        const token = authHeader.split(' ')[1];
+        if (!process.env.JWT_SECRET_KEY) {
+            return res.sendStatus(500);
+        }
+        jwt.verify(token, process.env.JWT_SECRET_KEY as any, async (err: VerifyErrors | null, decoded: any) => {
+            if (err) {
+                res.sendStatus(403);
+                return;
+            }
+            if (!decoded) {
+                res.sendStatus(403);
+                return;
+            }
+            const user = decoded as JwtPayload;
+            if ('id' in user) {
+                try {
+                    const userDocument = await User.findById(user.id).select('-password');
+                    if (!userDocument) {
+                        res.status(404).send({message: 'No user found.'});
+                        return;
+                    }
+                    res.status(200).send(userDocument);
+                } catch (error) {
+                    res.status(500).send({message: 'There was a problem finding the user.'});
+                }
+            } else {
+                res.sendStatus(403);
+            }
+        });
+    } else {
+        res.sendStatus(401);
+    }
+});
+
 app.use((req: Request, res: Response, next: NextFunction) => {
     const authHeader = req.headers.authorization;
     if (authHeader) {
         const token = authHeader.split(' ')[1];
-        jwt.verify(token, 'your-secret-key', (err, user) => {
+        if (!process.env.JWT_SECRET_KEY) {
+            return res.sendStatus(500);
+        }
+        jwt.verify(token, process.env.JWT_SECRET_KEY, (err, user) => {
             if (err) {
                 return res.sendStatus(403);
             }

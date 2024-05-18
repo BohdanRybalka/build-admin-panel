@@ -67,7 +67,8 @@ export default function AuthPage() {
         if (validateForm()) {
             if (authMode === 'register') {
                 try {
-                    await axios.post('http://localhost:4000/register', {username: email, password});
+                    const response = await axios.post('http://localhost:4000/register', {username: email, password});
+                    localStorage.setItem('token', response.data.token);
                     navigate('/');
                 } catch (error) {
                     const axiosError = error as AxiosError;

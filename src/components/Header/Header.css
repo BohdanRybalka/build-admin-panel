@@ -22,8 +22,11 @@
     align-items: center;
     background-color: var(--chakra-colors-grey-500);
     border-radius: 10px;
-    width: 200px;
+    padding: 5px;
+    width: 350px;
     height: 45px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .header-user-icon {
@@ -31,4 +34,18 @@
     height: 1.5rem;
     margin-right: 1rem;
     margin-left: 1rem;
+}
+
+.header-user-button {
+    width: 100%;
+    border-radius: 10px !important;
+    background-color: var(--chakra-colors-grey-400);
+}
+
+.header-user-button:hover {
+    background-color: var(--chakra-colors-grey-300) !important;
+}
+
+.header-user-menu {
+    width: 128% !important;
 }
