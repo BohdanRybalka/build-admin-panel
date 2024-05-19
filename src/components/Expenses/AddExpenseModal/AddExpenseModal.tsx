@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
     Modal,
     ModalOverlay,
@@ -15,19 +15,30 @@ import {
 import './AddExpenseModal.css';
 import SaveBtn from "../../Buttons/SaveBtn/SaveBtn";
 import CancelBtn from "../../Buttons/CancelBtn/CancelBtn";
+import {createExpense} from "../../../hooks/createExpense";
 
 interface AddExpenseModalProps {
     isOpen: boolean;
     onClose: () => void;
+    projectId: string;
+    setExpenses: React.Dispatch<React.SetStateAction<Expense[]>>;
 }
 
-const AddExpenseModal: React.FC<AddExpenseModalProps> = ({isOpen, onClose}) => {
+interface Expense {
+    _id: string;
+    name: string;
+    price: number;
+    type: string;
+    projectId: string;
+}
+
+const AddExpenseModal: React.FC<AddExpenseModalProps> = ({isOpen, onClose, projectId, setExpenses}) => {
     const [isValid, setIsValid] = useState(true);
     const [isPriceValid, setIsPriceValid] = useState(true); // New state for price validation
     const [attemptedSubmit, setAttemptedSubmit] = useState(false);
     const [expenseType, setExpenseType] = useState('');
-    const nameRef = useRef<HTMLInputElement>(null);
-    const priceRef = useRef<HTMLInputElement>(null);
+    const [name, setName] = useState(''); // Додано
+    const [price, setPrice] = useState(''); // Додано
 
     useEffect(() => {
         if (isOpen) {
@@ -38,16 +49,17 @@ const AddExpenseModal: React.FC<AddExpenseModalProps> = ({isOpen, onClose}) => {
         }
     }, [isOpen]);
 
-    const handleInputChange = () => {
+    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setIsValid(true);
-        setIsPriceValid(true); // Reset price validation state when input changes
-        setAttemptedSubmit(false);
+        setIsPriceValid(true);
+        if (event.target.name === 'name') {
+            setName(event.target.value);
+        } else if (event.target.name === 'price') {
+            setPrice(event.target.value);
+        }
     };
 
-    const handleSave = () => {
-        const name = nameRef.current?.value;
-        const price = priceRef.current?.value || '';
-
+    const handleSave = async () => {
         const isPriceNumber = !isNaN(parseFloat(price)) && isFinite(parseFloat(price));
 
         if (!name || !price || !expenseType) {
@@ -57,14 +69,28 @@ const AddExpenseModal: React.FC<AddExpenseModalProps> = ({isOpen, onClose}) => {
         }
 
         if (!isPriceNumber) {
-            setIsPriceValid(false); // Set price validation state to false if price is not a number
+            setIsPriceValid(false);
             setAttemptedSubmit(true);
             return;
         }
 
-        setIsValid(true);
-        setIsPriceValid(true); // Set price validation state to true if price is a number
-        onClose();
+        const expenseData = {
+            name,
+            price,
+            type: expenseType,
+            projectId, // you need to provide projectId
+        };
+
+        const newExpense = await createExpense(expenseData);
+
+        if (newExpense) {
+            setExpenses((prevExpenses: Expense[]) => [...prevExpenses, newExpense]);
+            setIsValid(true);
+            onClose();
+        } else {
+            setIsValid(false);
+            setAttemptedSubmit(true);
+        }
     };
 
     return (
@@ -76,7 +102,7 @@ const AddExpenseModal: React.FC<AddExpenseModalProps> = ({isOpen, onClose}) => {
                 <ModalBody className="modal-body">
                     <FormControl isInvalid={!isValid && attemptedSubmit}>
                         <FormLabel className="form-label">Expense Name</FormLabel>
-                        <Input className="input-field" placeholder="Expense Name" ref={nameRef} required
+                        <Input className="input-field" placeholder="Expense Name" name="name" value={name} required
                                onChange={handleInputChange}/>
                         {!isValid && attemptedSubmit && <FormErrorMessage>Field is required</FormErrorMessage>}
                     </FormControl>
@@ -92,7 +118,7 @@ const AddExpenseModal: React.FC<AddExpenseModalProps> = ({isOpen, onClose}) => {
                     </FormControl>
                     <FormControl mt={10} isInvalid={!isPriceValid && attemptedSubmit}>
                         <FormLabel className="form-label">Price</FormLabel>
-                        <Input className="input-field" placeholder="Price" ref={priceRef} required
+                        <Input className="input-field" placeholder="Price" name="price" value={price} required
                                onChange={handleInputChange}/>
                         {!isPriceValid && attemptedSubmit && <FormErrorMessage>Price must be a number</FormErrorMessage>}
                     </FormControl>

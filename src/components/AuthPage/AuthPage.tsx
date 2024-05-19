@@ -16,7 +16,7 @@ import {useNavigate} from 'react-router-dom';
 
 export default function AuthPage() {
     const [authMode, setAuthMode] = useState('login');
-    const [activeButton, setActiveButton] = useState(localStorage.getItem('activeButton') || '');
+    const [activeButton, setActiveButton] = useState('login');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');

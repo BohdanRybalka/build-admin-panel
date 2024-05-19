@@ -1,6 +1,6 @@
 .add-button {
     color: var(--chakra-colors-grey-50);
-    font-size: var(--chakra-fontSizes-lg);
+    font-size: var(--chakra-fontSizes-xl) !important;
     border-radius: var(--chakra-radii-lg);
     padding: var(--chakra-space-7);
     margin-left: var(--chakra-space-4);

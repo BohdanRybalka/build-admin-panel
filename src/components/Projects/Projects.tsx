@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Heading, Box, Flex, Grid} from '@chakra-ui/react';
 import ProjectTile from "./ProjectTile/ProjectTile";
 import AddProjectModal from "./AddProjectModal/AddProjectModal";
@@ -7,22 +7,47 @@ import SelectBtn from "../Buttons/SelectBtn/SelectBtn";
 import AddBtn from "../Buttons/AddBtn/AddBtn";
 import DeleteBtn from "../Buttons/DeleteBtn/DeleteBtn";
 import useAuthRedirect from "../../hooks/useAuthRedirect";
+import axios from "axios";
+import mongoose from "mongoose";
 
 interface Project {
+    _id: string;
     name: string;
     startDate: Date;
     budget: number;
-    imageUrl: string;
+    userId: string;
+    street: string;
+    description: string;
 }
 
 export default function Projects() {
     const [isModalOpen, setModalOpen] = useState(false);
-    const [projects] = useState<Project[]>([]);
+    const [projects, setProjects] = useState<Project[]>([]);
     const [selectedProjects, setSelectedProjects] = useState<number[]>([]);
     const [isSelecting, setIsSelecting] = useState(false);
     const authRedirect = useAuthRedirect();
 
-    if (authRedirect) return authRedirect;
+    useEffect(() => {
+        if (authRedirect) return;
+
+        const token = localStorage.getItem('token');
+        if (!token) {
+            console.error('No authorization token found');
+            return;
+        }
+
+        axios.get('http://localhost:4000/api/projects', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+            .then(response => {
+                setProjects(response.data);
+            })
+            .catch(error => {
+                console.error('Error fetching projects', error);
+            });
+    }, [authRedirect]);
 
     const handleOpenModal = () => {
         setModalOpen(true);
@@ -42,13 +67,38 @@ export default function Projects() {
     const handleSelectMode = () => {
         setIsSelecting(!isSelecting);
         if (isSelecting) {
-            setSelectedProjects([]); // Reset selected projects when exiting select mode
+            setSelectedProjects([]);
         }
     };
 
-    const handleDeleteProjects = () => {
-        // Додайте логіку видалення проєктів тут
+    const handleDeleteProjects = async () => {
+        if (selectedProjects.length === 0) {
+            return;
+        }
+
+        const token = localStorage.getItem('token');
+        if (!token) {
+            console.error('No authorization token found');
+            return;
+        }
+        
+        const projectIds = selectedProjects.map(index => new mongoose.Types.ObjectId(projects[index]._id));
+
+        try {
+            await axios.delete('http://localhost:4000/api/projects/delete', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                },
+                data: projectIds
+            });
+
+            setProjects(prevProjects => prevProjects.filter((_, index) => !selectedProjects.includes(index)));
+            setSelectedProjects([]);
+        } catch (error) {
+            console.error('Error deleting projects', error);
+        }
     };
+
 
     return (
         <Box className="projects-box">
@@ -67,15 +117,16 @@ export default function Projects() {
                             name={project.name}
                             startDate={project.startDate}
                             budget={project.budget}
-                            imageUrl={project.imageUrl}
                             isSelected={selectedProjects.includes(index)}
                             onSelectedChange={() => handleSelectProject(index)}
                             isSelecting={isSelecting}
+                            street={project.street}
+                            description={project.description}
                         />
                     </Box>
                 ))}
             </Grid>
-            <AddProjectModal isOpen={isModalOpen} onClose={handleCloseModal}/>
+            <AddProjectModal isOpen={isModalOpen} onClose={handleCloseModal} setProjects={setProjects}/>
         </Box>
     );
 }

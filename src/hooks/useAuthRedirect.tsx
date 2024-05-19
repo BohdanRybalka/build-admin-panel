@@ -27,11 +27,11 @@ export default function useAuthRedirect() {
     }, [location]);
 
     if (isAuthenticated === null) {
-        return null; // or a loading spinner
+        return null;
     }
 
     if (!isAuthenticated) {
-        return <Navigate to="/auth" replace />;
+        return <Navigate to="/auth" replace/>;
     }
 
     return null;

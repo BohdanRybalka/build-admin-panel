@@ -1,7 +1,9 @@
 .expenses-content {
-    font-size: var(--chakra-fontSizes-md);
+    font-size: var(--chakra-fontSizes-lg) !important;
     color: var(--chakra-colors-grey-900);
     line-height: 1.5;
+    margin-top: 1vh;
+    margin-bottom: 1vh;
 }
 
 .expenses-box {

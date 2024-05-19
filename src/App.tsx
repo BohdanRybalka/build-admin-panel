@@ -38,6 +38,16 @@ function AppContent() {
                 console.error('Error in fetchUser:', error);
             });
         }
+        if (location.pathname === '/expenses') {
+            fetchUser().catch(error => {
+                console.error('Error in fetchUser:', error);
+            });
+        }
+        if (location.pathname === '/projects') {
+            fetchUser().catch(error => {
+                console.error('Error in fetchUser:', error);
+            });
+        }
     }, [location.pathname]);
 
     const getTitle = () => {

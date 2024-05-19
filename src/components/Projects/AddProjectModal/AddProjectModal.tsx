@@ -13,48 +13,79 @@ import {
     Input,
     FormErrorMessage
 } from "@chakra-ui/react";
-import DatePicker from "react-datepicker"; // Import the DatePicker component
-import "react-datepicker/dist/react-datepicker.css"; // Import the CSS for DatePicker
-import './AddProjectModal.css'; // Import the CSS file
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import './AddProjectModal.css';
+import {createProject} from "../../../hooks/createProject";
+
+interface Project {
+    _id: string;
+    name: string;
+    startDate: Date;
+    budget: number;
+    userId: string;
+    street: string;
+    description: string;
+}
 
 interface AddProjectModalProps {
     isOpen: boolean;
     onClose: () => void;
+    setProjects: React.Dispatch<React.SetStateAction<Project[]>>;
 }
 
-const AddProjectModal: React.FC<AddProjectModalProps> = ({isOpen, onClose}) => {
+const AddProjectModal: React.FC<AddProjectModalProps> = (props) => {
     const [isValid, setIsValid] = useState(true);
     const [attemptedSubmit, setAttemptedSubmit] = useState(false);
     const nameRef = useRef<HTMLInputElement>(null);
-    const [startDate, setStartDate] = useState(new Date()); // Use state for the date
+    const [startDate, setStartDate] = useState(new Date());
+    const streetRef = useRef<HTMLInputElement>(null);
+    const descriptionRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
-        if (isOpen) {
+        if (props.isOpen) {
             setIsValid(true);
             setAttemptedSubmit(false);
         }
-    }, [isOpen]);
+    }, [props.isOpen]);
 
     const handleInputChange = () => {
         setIsValid(true);
         setAttemptedSubmit(false);
     };
 
-    const handleSave = () => {
+    const handleSave = async () => {
         const name = nameRef.current?.value;
+        const street = streetRef.current?.value;
+        const description = descriptionRef.current?.value || '';
 
-        if (!name || !startDate) {
+        if (!name || !startDate || !street) {
             setIsValid(false);
             setAttemptedSubmit(true);
             return;
         }
 
-        setIsValid(true);
-        onClose();
+        const projectData = {
+            name,
+            startDate,
+            street,
+            description,
+        };
+
+        const newProject = await createProject(projectData);
+
+        if (newProject) {
+            props.setProjects((prevProjects: Project[]) => [...prevProjects, newProject]);
+            setIsValid(true);
+            props.onClose();
+        } else {
+            setIsValid(false);
+            setAttemptedSubmit(true);
+        }
     };
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose}>
+        <Modal isOpen={props.isOpen} onClose={props.onClose}>
             <ModalOverlay/>
             <ModalContent>
                 <ModalHeader className="modal-header">Add new project</ModalHeader>
@@ -67,6 +98,12 @@ const AddProjectModal: React.FC<AddProjectModalProps> = ({isOpen, onClose}) => {
                         {!isValid && attemptedSubmit && <FormErrorMessage>Field is required</FormErrorMessage>}
                     </FormControl>
                     <FormControl mt={4} isInvalid={!isValid && attemptedSubmit}>
+                        <FormLabel className="form-label">Street</FormLabel>
+                        <Input className="input-field" placeholder="Street" ref={streetRef} required
+                               onChange={handleInputChange}/>
+                        {!isValid && attemptedSubmit && <FormErrorMessage>Field is required</FormErrorMessage>}
+                    </FormControl>
+                    <FormControl mt={4} isInvalid={!isValid && attemptedSubmit}>
                         <FormLabel className="form-label">Building Start Date</FormLabel>
                         <DatePicker
                             className="datepicker"
@@ -75,13 +112,18 @@ const AddProjectModal: React.FC<AddProjectModalProps> = ({isOpen, onClose}) => {
                         />
                         {!isValid && attemptedSubmit && <FormErrorMessage>Field is required</FormErrorMessage>}
                     </FormControl>
+                    <FormControl mt={4} isInvalid={!isValid && attemptedSubmit}>
+                        <FormLabel className="form-label">Description</FormLabel>
+                        <Input className="input-field" placeholder="Description" ref={descriptionRef} required
+                               onChange={handleInputChange}/>
+                        {!isValid && attemptedSubmit && <FormErrorMessage>Field is required</FormErrorMessage>}
+                    </FormControl>
                 </ModalBody>
-
                 <ModalFooter>
                     <Button className="save-button" colorScheme="blue" mr={3} onClick={handleSave}>
                         Save
                     </Button>
-                    <Button className="cancel-button" variant="ghost" onClick={onClose}>Cancel</Button>
+                    <Button className="cancel-button" variant="ghost" onClick={props.onClose}>Cancel</Button>
                 </ModalFooter>
             </ModalContent>
         </Modal>

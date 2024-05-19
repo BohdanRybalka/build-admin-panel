@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Text, Box, Heading, Flex, Table, Thead, Tbody, Tr, Th, Td, Checkbox} from "@chakra-ui/react";
 import AddExpenseModal from './AddExpenseModal/AddExpenseModal';
 import './Expenses.css';
@@ -8,14 +8,80 @@ import workIcon from "../../assets/expenseTypes/work.png";
 import materialsIcon from "../../assets/expenseTypes/materials.png";
 import other from "../../assets/expenseTypes/other.png";
 import useAuthRedirect from "../../hooks/useAuthRedirect";
+import axios from "axios";
+import ProjectDropdown from "../ProjectDropdown/ProjectDropdown";
+import {fetchProjectsFromAPI} from "../../hooks/fetchProjectsFromAPI";
+
+interface Expense {
+    _id: string;
+    name: string;
+    price: number;
+    type: string;
+    projectId: string;
+}
+
+interface Project {
+    _id: string;
+    name: string;
+    startDate: Date;
+    budget: number;
+    userId: string;
+    street: string;
+    description: string;
+}
+
 
 export default function Expenses() {
-    const buildingName = "Building 1";
     const [isModalOpen, setModalOpen] = useState(false);
     const [selectedExpenses, setSelectedExpenses] = useState<Array<number>>([]);
     const authRedirect = useAuthRedirect();
+    const [selectedProject, setSelectedProject] = useState<{ id: string, name: string }>({
+        id: '',
+        name: "Currently you have no projects! Navigate to Projects tab to add project"
+    });
+    const [expenses, setExpenses] = useState<Expense[]>([]);
+    const [projects, setProjects] = useState<Project[]>([]);
 
-    if (authRedirect) return authRedirect;
+    useEffect(() => {
+        if (!authRedirect) {
+            const fetchExpenses = async () => {
+                const token = localStorage.getItem('token');
+                const response = await axios.get(`http://localhost:4000/api/expenses/projectId=${selectedProject}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                setExpenses(response.data);
+            };
+
+            if (selectedProject) {
+                fetchExpenses()
+                    .then(() => {
+                        console.log('Expenses fetched successfully');
+                    })
+                    .catch((error) => {
+                        console.error('Error fetching expenses:', error);
+                    });
+            }
+            fetchProjectsFromAPI().then(setProjects);
+        }
+    }, [selectedProject, authRedirect]);
+
+    const handleProjectChange = (selectedProjectId: string) => {
+        const token = localStorage.getItem('token');
+
+        axios.get(`http://localhost:4000/api/expenses/${selectedProjectId}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+            .then(response => {
+                // handle the response
+            })
+            .catch(error => {
+                console.error('Error fetching expenses:', error);
+            });
+    };
 
     const handleOpenModal = () => {
         setModalOpen(true);
@@ -33,43 +99,18 @@ export default function Expenses() {
         }
     };
 
-    const handleDeleteExpenses = () => {
-        // Delete the selected expenses
+    const handleDeleteExpenses = async () => {
+        const token = localStorage.getItem('token');
+        const expenseIds = selectedExpenses.map(index => expenses[index]._id);
+        await axios.delete('http://localhost:4000/api/expenses/delete', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
+            data: expenseIds
+        });
+        setExpenses(prevExpenses => prevExpenses.filter((_, index) => !selectedExpenses.includes(index)));
+        setSelectedExpenses([]);
     };
-
-    const expenses = [
-        {name: "Wood", price: "$100", type: "materials"},
-        {name: "Nails", price: "$200", type: "materials"},
-        {name: "Bricks", price: "$300", type: "materials"},
-        {name: "Cement", price: "$400", type: "materials"},
-        {name: "Steel", price: "$500", type: "materials"},
-        {name: "Glass", price: "$600", type: "materials"},
-        {name: "Insulation", price: "$700", type: "materials"},
-        {name: "Paint", price: "$800", type: "materials"},
-        {name: "Tiles", price: "$900", type: "materials"},
-        {name: "Pipes", price: "$1000", type: "materials"},
-        {name: "Wiring", price: "$1100", type: "materials"},
-        {name: "Plaster", price: "$1200", type: "materials"},
-        {name: "Roofing", price: "$1300", type: "materials"},
-        {name: "Steel", price: "$500", type: "work"},
-        {name: "Glass", price: "$600", type: "work"},
-        {name: "Insulation", price: "$700", type: "work"},
-        {name: "Paint", price: "$800", type: "work"},
-        {name: "Tiles", price: "$900", type: "work"},
-        {name: "Pipes", price: "$1000", type: "work"},
-        {name: "Wiring", price: "$1100", type: "work"},
-        {name: "Plaster", price: "$1200", type: "work"},
-        {name: "Roofing", price: "$1300", type: "work"},
-        {name: "Steel", price: "$500", type: "other"},
-        {name: "Glass", price: "$600", type: "other"},
-        {name: "Insulation", price: "$700", type: "other"},
-        {name: "Paint", price: "$800", type: "other"},
-        {name: "Tiles", price: "$900", type: "other"},
-        {name: "Pipes", price: "$1000", type: "other"},
-        {name: "Wiring", price: "$1100", type: "other"},
-        {name: "Plaster", price: "$1200", type: "other"},
-        {name: "Roofing", price: "$1300", type: "other"}
-    ];
 
     const getIconByType = (type: string) => {
         switch (type) {
@@ -93,9 +134,10 @@ export default function Expenses() {
                     <DeleteBtn onClick={handleDeleteExpenses}>Delete</DeleteBtn>
                 </Box>
             </Flex>
-            <Heading as="h1" size="lg">{buildingName}</Heading>
+            <Heading as="h1" size="lg">{selectedProject.name}</Heading>
             <Text className="expenses-content">This is the expenses page of our application. Here you can track your
-                construction expenses for {buildingName}.</Text>
+                construction expenses for {selectedProject.name}.</Text>
+            <ProjectDropdown onHouseChange={handleProjectChange}/>
             <Table className="expenses-table" variant="simple" mt="12" size='lg'>
                 <Thead className="table-content">
                     <Tr>
@@ -128,7 +170,12 @@ export default function Expenses() {
                     ))}
                 </Tbody>
             </Table>
-            <AddExpenseModal isOpen={isModalOpen} onClose={handleCloseModal}/>
+            <AddExpenseModal
+                isOpen={isModalOpen}
+                onClose={handleCloseModal}
+                projectId={selectedProject.id}
+                setExpenses={setExpenses}
+            />
         </Box>
     );
 }

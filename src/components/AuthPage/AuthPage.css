@@ -12,6 +12,7 @@
     height: 55vh;
     background-color: var(--chakra-colors-grey-200);
     border-radius: var(--chakra-radii-2xl);
+    box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.2);
 }
 
 .auth-logo {
@@ -26,7 +27,7 @@
 .auth-mode-button {
     width: 50%;
     height: 3.5vh !important;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 4px 4px 8px rgba(1, 0, 10, 0.2);
     background-color: var(--chakra-colors-grey-400) !important;
     border-radius: 0 !important;
 }

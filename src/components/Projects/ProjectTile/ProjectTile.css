@@ -5,6 +5,7 @@
     box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.2);
     transition: 0.3s;
     position: relative;
+    height: 20vh; /* Додайте цей рядок */
 }
 
 .project-tile:hover {
@@ -14,17 +15,15 @@
 .project-image-container {
     display: flex;
     align-items: center;
-    justify-content: center;
-    height: 1%;
+    width: 20%; /* Зменшіть ширину */
 }
 
 .project-image {
-    max-width: 60%;
-    max-height: 60%;
+    width: 90%;
 }
 
 .project-info {
-    width: 70%;
+    width: 80%; /* Збільшіть ширину */
     padding: var(--chakra-space-4);
     font-family: var(--chakra-fonts-body);
 }
@@ -34,9 +33,22 @@
 }
 
 .project-checkbox {
-    position: absolute;
-    right: 5%;
-    bottom: 12%;
     transform: scale(1.8);
     border-color: var(--chakra-colors-grey-400);
+}
+
+.project-info h3 {
+    color: var(--chakra-colors-grey-700);
+    font-weight: bold;
+    margin-bottom: var(--chakra-space-2);
+}
+
+.project-info .date, .project-info .street, .project-info .budget {
+    color: var(--chakra-colors-grey-700);
+    margin-bottom: var(--chakra-space-1);
+}
+
+.project-info .description {
+    color: var(--chakra-colors-grey-600);
+    font-style: italic;
 }

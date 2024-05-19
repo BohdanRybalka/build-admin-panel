@@ -1,0 +1,23 @@
+.dropdown-wrap {
+    margin-top: 3vh;
+    width: 30vh !important;
+    height: 4vh !important;
+    border-radius: 10px;
+}
+
+.dropdown {
+    height: 4vh !important;
+    border: 3px solid var(--chakra-colors-grey-600);
+    background-color: var(--chakra-colors-grey-300);
+    font-size: 1.3em;
+    color: var(--chakra-colors-grey-900);
+}
+
+.dropdown option:nth-child(odd) {
+    background-color: var(--chakra-colors-grey-200);
+}
+
+.dropdown option:nth-child(even) {
+    background-color: var(--chakra-colors-grey-300);
+
+}
