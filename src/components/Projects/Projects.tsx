@@ -1,12 +1,12 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {Heading, Box, Flex, Grid} from '@chakra-ui/react';
 import ProjectTile from "./ProjectTile/ProjectTile";
 import AddProjectModal from "./AddProjectModal/AddProjectModal";
 import './Projects.css';
-import houseIcon from '../../assets/houseIcons/houseIcon.png'
 import SelectBtn from "../Buttons/SelectBtn/SelectBtn";
 import AddBtn from "../Buttons/AddBtn/AddBtn";
 import DeleteBtn from "../Buttons/DeleteBtn/DeleteBtn";
+import useAuthRedirect from "../../hooks/useAuthRedirect";
 
 interface Project {
     name: string;
@@ -17,25 +17,12 @@ interface Project {
 
 export default function Projects() {
     const [isModalOpen, setModalOpen] = useState(false);
-    const [projects, setProjects] = useState<Project[]>([]);
+    const [projects] = useState<Project[]>([]);
     const [selectedProjects, setSelectedProjects] = useState<number[]>([]);
     const [isSelecting, setIsSelecting] = useState(false);
+    const authRedirect = useAuthRedirect();
 
-    useEffect(() => {
-        const initialProjects: Project[] = [
-            {name: 'Project 1', startDate: new Date(), budget: 10000, imageUrl: houseIcon},
-            {name: 'Project 2', startDate: new Date(), budget: 40000, imageUrl: houseIcon},
-            {name: 'Project 3', startDate: new Date(), budget: 20000, imageUrl: houseIcon},
-            {name: 'Project 4', startDate: new Date(), budget: 30000, imageUrl: houseIcon},
-            {name: 'Project 5', startDate: new Date(), budget: 50000, imageUrl: houseIcon},
-            {name: 'Project 1', startDate: new Date(), budget: 10000, imageUrl: houseIcon},
-            {name: 'Project 2', startDate: new Date(), budget: 40000, imageUrl: houseIcon},
-            {name: 'Project 3', startDate: new Date(), budget: 20000, imageUrl: houseIcon},
-            {name: 'Project 4', startDate: new Date(), budget: 30000, imageUrl: houseIcon},
-            {name: 'Project 5', startDate: new Date(), budget: 50000, imageUrl: houseIcon},
-        ];
-        setProjects(initialProjects);
-    }, []);
+    if (authRedirect) return authRedirect;
 
     const handleOpenModal = () => {
         setModalOpen(true);

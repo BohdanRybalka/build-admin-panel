@@ -7,11 +7,15 @@ import DeleteBtn from "../Buttons/DeleteBtn/DeleteBtn";
 import workIcon from "../../assets/expenseTypes/work.png";
 import materialsIcon from "../../assets/expenseTypes/materials.png";
 import other from "../../assets/expenseTypes/other.png";
+import useAuthRedirect from "../../hooks/useAuthRedirect";
 
 export default function Expenses() {
     const buildingName = "Building 1";
     const [isModalOpen, setModalOpen] = useState(false);
     const [selectedExpenses, setSelectedExpenses] = useState<Array<number>>([]);
+    const authRedirect = useAuthRedirect();
+
+    if (authRedirect) return authRedirect;
 
     const handleOpenModal = () => {
         setModalOpen(true);

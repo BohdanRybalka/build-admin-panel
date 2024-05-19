@@ -1,8 +1,13 @@
 import React from 'react';
 import {Box, Heading, Text} from "@chakra-ui/react";
 import './Home.css';
+import useAuthRedirect from '../../hooks/useAuthRedirect';
 
 export default function Home() {
+    const authRedirect = useAuthRedirect();
+
+    if (authRedirect) return authRedirect;
+
     return (
         <Box className="home-box">
             <Heading fontSize="24px" fontWeight="bold" color="#333" mb="20px">
