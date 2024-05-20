@@ -1,14 +1,14 @@
-.select-btn {
-    color: var(--chakra-colors-grey-100);
+.export-to-csv-btn {
+    color: var(--chakra-colors-grey-200) !important;
     font-size: var(--chakra-fontSizes-xl) !important;
     border-radius: var(--chakra-radii-lg);
     padding: var(--chakra-space-7);
     margin-left: var(--chakra-space-4);
-    background-color: var(--chakra-colors-green-400) !important;
+    background-color: var(--chakra-colors-blue-800) !important;
     width: 15vh;
     box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.2);
 }
 
-.select-btn:hover {
-    background-color: var(--chakra-colors-green-500) !important;
+.export-to-csv-btn:hover {
+    background-color: var(--chakra-colors-red-500) !important;
 }

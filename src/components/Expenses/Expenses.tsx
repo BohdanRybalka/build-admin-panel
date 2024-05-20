@@ -11,6 +11,8 @@ import useAuthRedirect from "../../hooks/useAuthRedirect";
 import axios from "axios";
 import ProjectDropdown from "../ProjectDropdown/ProjectDropdown";
 import {fetchProjectsFromAPI} from "../../hooks/fetchProjectsFromAPI";
+import ExportToCSVBtn from "../Buttons/ExportToCSVBtn/ExportToCSVBtn";
+import {FaDollarSign} from "react-icons/fa6";
 
 interface Expense {
     _id: string;
@@ -37,7 +39,7 @@ export default function Expenses() {
     const authRedirect = useAuthRedirect();
     const [selectedProject, setSelectedProject] = useState<{ id: string, name: string }>({
         id: '',
-        name: "Currently you have no projects! Navigate to Projects tab to add project"
+        name: "You didn't choose any project, open dropdown and select needed project.."
     });
     const [expenses, setExpenses] = useState<Expense[]>([]);
     const [projects, setProjects] = useState<Project[]>([]);
@@ -130,10 +132,11 @@ export default function Expenses() {
     return (
         <Box className="expenses-box">
             <Flex justifyContent="space-between" alignItems="start">
-                <Heading as="h2" size="lg" mb="12">Buildings</Heading>
+                <Heading as="h2" size="lg" mb="12">Expenses</Heading>
                 <Box>
                     <AddBtn onClick={handleOpenModal}>Add Expense</AddBtn>
                     <DeleteBtn onClick={handleDeleteExpenses}>Delete</DeleteBtn>
+                    <ExportToCSVBtn expenses={expenses}/>
                 </Box>
             </Flex>
             <Heading as="h1" size="lg">{selectedProject.name}</Heading>
@@ -166,8 +169,13 @@ export default function Expenses() {
                                     <Text className="expense-name" ml={2}>{expense.name}</Text>
                                 </Flex>
                             </Td>
-                            <Td>{expense.type}</Td>
-                            <Td>{expense.price}</Td>
+                            <Td><Text className="expense-type">{expense.type}</Text></Td>
+                            <Td>
+                                <Flex alignItems="center">
+                                    <Text className="expense-price">{expense.price}</Text>
+                                    <FaDollarSign color="green" size="1.7em"/>
+                                </Flex>
+                            </Td>
                         </Tr>
                     ))}
                 </Tbody>

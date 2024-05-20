@@ -44,11 +44,15 @@
 }
 
 .project-info .date, .project-info .street, .project-info .budget {
-    color: var(--chakra-colors-grey-700);
-    margin-bottom: var(--chakra-space-1);
+    color: var(--chakra-colors-grey-700) !important;
+    margin-bottom: var(--chakra-space-1) !important;
+}
+
+.budget {
+    font-weight: bold;
 }
 
 .project-info .description {
-    color: var(--chakra-colors-grey-600);
-    font-style: italic;
+    color: var(--chakra-colors-grey-600) !important;
+    font-style: italic !important;
 }

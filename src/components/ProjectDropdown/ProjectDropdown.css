@@ -7,17 +7,22 @@
 
 .dropdown {
     height: 4vh !important;
-    border: 3px solid var(--chakra-colors-grey-600);
-    background-color: var(--chakra-colors-grey-300);
-    font-size: 1.3em;
+    border: 3px solid var(--chakra-colors-grey-600) !important;
+    background-color: var(--chakra-colors-grey-300) !important;
+    font-size: 1.3em !important;
     color: var(--chakra-colors-grey-900);
+}
+
+.dropdown:hover {
+    border-color: var(--chakra-colors-yellow-400) !important;
 }
 
 .dropdown option:nth-child(odd) {
     background-color: var(--chakra-colors-grey-200);
+    font-size: 1em !important;
 }
 
 .dropdown option:nth-child(even) {
     background-color: var(--chakra-colors-grey-300);
-
+    font-size: 1em !important;
 }

@@ -9,3 +9,13 @@
     margin-left: var(--chakra-space-4);
     margin-right: var(--chakra-space-4);
 }
+
+.chart-box {
+    background-color: var(--chakra-colors-grey-300);
+    border-radius: var(--chakra-radii-2xl);
+    padding: var(--chakra-space-10);
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+    width: 75vh;
+    height: 77vh;
+}

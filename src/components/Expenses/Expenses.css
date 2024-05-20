@@ -18,26 +18,20 @@
     margin-right: var(--chakra-space-4);
 }
 
-.expense-icon {
-    margin-right: 28px;
-}
-
 .table-content {
     font-size: var(--chakra-fontSizes-lg);
-    font-family: var(--chakra-fonts-body);
-}
-
-.expenses-table {
-    border: 5px solid var(--chakra-colors-grey-600);
+    font-family: var(--chakra-fonts-body) !important;
 }
 
 .checkbox {
+    scale: 1.5;
     padding: 1.5vh;
     border-color: var(--chakra-colors-grey-700);
 }
 
 .checkbox:hover {
-    border-color: var(--chakra-colors-yellow-200);
+    border-color: var(--chakra-colors-grey-200);
+    color: var(--chakra-colors-grey-900) !important;
 }
 
 .select-column {
@@ -45,10 +39,59 @@
 }
 
 .table-header {
-    font-family: var(--chakra-fonts-body);
-    font-size: var(--chakra-fontSizes-md) !important;
+    font-family: var(--chakra-fonts-body) !important;
+    font-size: var(--chakra-fontSizes-xl) !important;
+    font-weight: bold !important;
+}
+
+.expenses-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--chakra-fonts-body) !important;
+    color: var(--chakra-colors-grey-900) !important;
+    background-color: var(--chakra-colors-grey-300) !important;
+    border: 5px solid var(--chakra-colors-grey-600) !important;
+}
+
+.expenses-table th {
+    background-color: var(--chakra-colors-grey-500) !important;
+    color: var(--chakra-colors-grey-50) !important;
+    font-size: var(--chakra-fontSizes-xl) !important;
+    font-weight: bold !important;
+    padding: var(--chakra-space-2) !important;
+    text-align: left !important;
+    height: 5vh;
+}
+
+.expenses-table td {
+    padding: var(--chakra-space-2);
+    font-size: var(--chakra-fontSizes-lg);
+    border-bottom: 1px solid var(--chakra-colors-grey-600);
+    position: relative;
+}
+
+.expenses-table tr:nth-child(even) {
+    background-color: var(--chakra-colors-grey-100);
+}
+
+.expenses-table tr:hover {
+    background-color: var(--chakra-colors-grey-400);
+    cursor: pointer;
+}
+
+.expense-icon {
+    margin-right: 28px;
 }
 
 .expense-name {
-    font-size: var(--chakra-fontSizes-xl);
+    font-size: var(--chakra-fontSizes-2xl);
+}
+
+.expense-price {
+    font-size: var(--chakra-fontSizes-2xl);
+    font-weight: bold;
+}
+
+.expense-type {
+    font-size: var(--chakra-fontSizes-2xl);
 }

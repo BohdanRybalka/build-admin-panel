@@ -271,6 +271,50 @@ app.post('/api/expenses/create', async (req, res) => {
     }
 });
 
+app.delete('/api/expenses/delete', async (req, res) => {
+    const authHeader = req.headers.authorization;
+    if (authHeader) {
+        const token = authHeader.split(' ')[1];
+        if (!process.env.JWT_SECRET_KEY) {
+            return res.sendStatus(500);
+        }
+        jwt.verify(token, process.env.JWT_SECRET_KEY as any, async (err: VerifyErrors | null, decoded: any) => {
+            if (err) {
+                res.sendStatus(403);
+                return;
+            }
+            if (!decoded) {
+                res.sendStatus(403);
+                return;
+            }
+            const user = decoded as JwtPayload;
+            if ('id' in user) {
+                try {
+                    const expenseIds = req.body;
+                    const expensesToDelete = await Expense.find({_id: {$in: expenseIds}});
+                    const totalExpensePrice = expensesToDelete.reduce((sum: number, expense: any) => sum + expense.price, 0);
+
+                    await Expense.deleteMany({_id: {$in: expenseIds}});
+
+                    const project = await Project.findById(expensesToDelete[0].projectId);
+                    if (project) {
+                        project.budget -= totalExpensePrice;
+                        await project.save();
+                    }
+
+                    res.status(200).send({message: 'Expenses deleted successfully.'});
+                } catch (error) {
+                    res.status(500).send({message: 'There was a problem deleting the expenses.'});
+                }
+            } else {
+                res.sendStatus(403);
+            }
+        });
+    } else {
+        res.sendStatus(401);
+    }
+});
+
 app.use((req: Request, res: Response, next: NextFunction) => {
     const authHeader = req.headers.authorization;
     if (authHeader) {
