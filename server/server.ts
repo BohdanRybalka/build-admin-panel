@@ -167,7 +167,8 @@ app.post('/api/projects/create', async (req, res) => {
             if ('id' in user) {
                 try {
                     const {name, startDate, street, description} = req.body;
-                    const newProject = new Project({name, startDate, street, description, userId: user.id});
+                    const budget = req.body.budget || 0;
+                    const newProject = new Project({name, startDate, street, description, userId: user.id, budget});
                     await newProject.save();
                     res.status(201).send(newProject);
                 } catch (error) {
@@ -247,9 +248,16 @@ app.post('/api/expenses/create', async (req, res) => {
             const user = decoded as JwtPayload;
             if ('id' in user) {
                 try {
-                    const {name, amount, date, projectId} = req.body;
-                    const newExpense = new Expense({name, amount, date, projectId});
+                    const {name, price, type, projectId} = req.body;
+                    const newExpense = new Expense({name, price, type, projectId});
                     await newExpense.save();
+
+                    const project = await Project.findById(projectId);
+                    if (project) {
+                        project.budget += price;
+                        await project.save();
+                    }
+
                     res.status(201).send(newExpense);
                 } catch (error) {
                     res.status(500).send({message: 'There was a problem creating the expense.'});

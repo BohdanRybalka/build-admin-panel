@@ -33,63 +33,60 @@ interface Expense {
 }
 
 const AddExpenseModal: React.FC<AddExpenseModalProps> = ({isOpen, onClose, projectId, setExpenses}) => {
-    const [isValid, setIsValid] = useState(true);
-    const [isPriceValid, setIsPriceValid] = useState(true); // New state for price validation
+    const [isNameValid, setIsNameValid] = useState(true);
+    const [isPriceValid, setIsPriceValid] = useState(true);
+    const [isExpenseTypeValid, setIsExpenseTypeValid] = useState(true);
     const [attemptedSubmit, setAttemptedSubmit] = useState(false);
     const [expenseType, setExpenseType] = useState('');
-    const [name, setName] = useState(''); // Додано
-    const [price, setPrice] = useState(''); // Додано
+    const [name, setName] = useState('');
+    const [price, setPrice] = useState('');
 
     useEffect(() => {
         if (isOpen) {
-            setIsValid(true);
-            setIsPriceValid(true); // Reset price validation state when modal opens
+            setIsNameValid(true);
+            setIsPriceValid(true);
+            setIsExpenseTypeValid(true);
             setAttemptedSubmit(false);
             setExpenseType('');
+            setName('');
+            setPrice('');
         }
     }, [isOpen]);
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setIsValid(true);
-        setIsPriceValid(true);
         if (event.target.name === 'name') {
             setName(event.target.value);
+            setIsNameValid(!!event.target.value);
         } else if (event.target.name === 'price') {
             setPrice(event.target.value);
+            setIsPriceValid(!isNaN(parseFloat(event.target.value)) && isFinite(parseFloat(event.target.value)));
         }
     };
 
+    const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setExpenseType(event.target.value);
+        setIsExpenseTypeValid(!!event.target.value);
+    };
+
     const handleSave = async () => {
-        const isPriceNumber = !isNaN(parseFloat(price)) && isFinite(parseFloat(price));
+        setAttemptedSubmit(true);
 
-        if (!name || !price || !expenseType) {
-            setIsValid(false);
-            setAttemptedSubmit(true);
-            return;
-        }
-
-        if (!isPriceNumber) {
-            setIsPriceValid(false);
-            setAttemptedSubmit(true);
+        if (!isNameValid || !isPriceValid || !isExpenseTypeValid || !projectId) {
             return;
         }
 
         const expenseData = {
             name,
-            price,
+            price: parseFloat(price),
             type: expenseType,
-            projectId, // you need to provide projectId
+            projectId,
         };
 
         const newExpense = await createExpense(expenseData);
 
         if (newExpense) {
             setExpenses((prevExpenses: Expense[]) => [...prevExpenses, newExpense]);
-            setIsValid(true);
             onClose();
-        } else {
-            setIsValid(false);
-            setAttemptedSubmit(true);
         }
     };
 
@@ -100,21 +97,21 @@ const AddExpenseModal: React.FC<AddExpenseModalProps> = ({isOpen, onClose, proje
                 <ModalHeader className="modal-header">Add new expense</ModalHeader>
                 <ModalCloseButton/>
                 <ModalBody className="modal-body">
-                    <FormControl isInvalid={!isValid && attemptedSubmit}>
+                    <FormControl isInvalid={!isNameValid && attemptedSubmit}>
                         <FormLabel className="form-label">Expense Name</FormLabel>
                         <Input className="input-field" placeholder="Expense Name" name="name" value={name} required
                                onChange={handleInputChange}/>
-                        {!isValid && attemptedSubmit && <FormErrorMessage>Field is required</FormErrorMessage>}
+                        {!isNameValid && attemptedSubmit && <FormErrorMessage>Field is required</FormErrorMessage>}
                     </FormControl>
-                    <FormControl mt={10} isInvalid={!isValid && attemptedSubmit}>
+                    <FormControl mt={10} isInvalid={!isExpenseTypeValid && attemptedSubmit}>
                         <FormLabel className="form-label">Expense Type</FormLabel>
                         <Select className="input-field" placeholder="Select expense type"
-                                onChange={(e) => setExpenseType(e.target.value)} required>
+                                onChange={handleSelectChange} required>
                             <option value="materials">Materials</option>
                             <option value="work">Work</option>
                             <option value="other">Other</option>
                         </Select>
-                        {!isValid && attemptedSubmit && <FormErrorMessage>Field is required</FormErrorMessage>}
+                        {!isExpenseTypeValid && attemptedSubmit && <FormErrorMessage>Field is required</FormErrorMessage>}
                     </FormControl>
                     <FormControl mt={10} isInvalid={!isPriceValid && attemptedSubmit}>
                         <FormLabel className="form-label">Price</FormLabel>

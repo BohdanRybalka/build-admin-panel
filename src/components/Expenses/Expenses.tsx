@@ -46,7 +46,7 @@ export default function Expenses() {
         if (!authRedirect) {
             const fetchExpenses = async () => {
                 const token = localStorage.getItem('token');
-                const response = await axios.get(`http://localhost:4000/api/expenses/projectId=${selectedProject}`, {
+                const response = await axios.get(`http://localhost:4000/api/expenses/${selectedProject.id}`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -68,6 +68,8 @@ export default function Expenses() {
     }, [selectedProject, authRedirect]);
 
     const handleProjectChange = (selectedProjectId: string) => {
+        setSelectedProject({...selectedProject, id: selectedProjectId});
+
         const token = localStorage.getItem('token');
 
         axios.get(`http://localhost:4000/api/expenses/${selectedProjectId}`, {

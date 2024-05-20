@@ -1,0 +1,11 @@
+.statistics-box {
+    font-size: var(--chakra-fontSizes-md);
+    color: var(--chakra-colors-grey-900);
+    line-height: 1.5;
+    background-color: var(--chakra-colors-grey-400);
+    border-radius: var(--chakra-radii-2xl);
+    padding: var(--chakra-space-10);
+    margin-top: var(--chakra-space-4);
+    margin-left: var(--chakra-space-4);
+    margin-right: var(--chakra-space-4);
+}

@@ -1,20 +1,22 @@
-import axios from 'axios';
-
-export async function createExpense(expenseData: any) {
-    const token = localStorage.getItem('token');
-    if (!token) {
-        console.error('No authorization token found');
-        return;
-    }
-
+export const createExpense = async (expenseData: { name: string; price: number; type: string; projectId: string; }) => {
     try {
-        const response = await axios.post('http://localhost:4000/api/expenses/create', expenseData, {
+        const response = await fetch('http://localhost:4000/api/expenses/create', {
+            method: 'POST',
             headers: {
-                'Authorization': `Bearer ${token}`
-            }
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            },
+            body: JSON.stringify(expenseData)
         });
-        return response.data;
+
+        if (response.ok) {
+            return await response.json();
+        } else {
+            console.error('Error creating expense');
+            return null;
+        }
     } catch (error) {
-        console.error('Error creating expense:', error);
+        console.error('Error creating expense', error);
+        return null;
     }
-}
+};
