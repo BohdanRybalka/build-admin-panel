@@ -19,13 +19,16 @@
 }
 
 .project-image {
-    width: 90%;
+    width: 70%;
+    margin-left: 2vh;
 }
 
 .project-info {
     width: 80%; /* Збільшіть ширину */
     padding: var(--chakra-space-4);
     font-family: var(--chakra-fonts-body);
+    background-color: var(--chakra-colors-grey-300);
+    border-radius: var(--chakra-radii-md);
 }
 
 .project-info h3 {

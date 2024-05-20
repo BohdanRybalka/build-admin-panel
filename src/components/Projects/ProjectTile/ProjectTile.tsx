@@ -1,7 +1,7 @@
 import React from 'react';
 import {Box, Heading, Text, Flex, Checkbox} from "@chakra-ui/react";
 import './ProjectTile.css';
-import houseIcon from '../../../assets/houseIcons/houseIcon.png';
+import houseIcon from '../../../assets/houseIcons/estateIcon.png';
 
 interface ProjectTileProps {
     name: string;
