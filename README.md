@@ -1,46 +1,54 @@
-# Getting Started with Create React App
+# Build Admin Panel
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is a web application built using. The purpose of this project is to create a user-friendly and responsive web
+application for managing projects, expenses, and users.
+
+## Project Structure
+
+The project is organized into three main directories: `public`, `server`, and `src`.
+
+### `public`
+
+This directory contains static assets such as the main HTML file (`index.html`), `manifest.json`, and `robots.txt`.
+
+### `server`
+
+This directory holds the server-side logic, including the main entry point for the server-side application (`server.ts`).
+The `dist` subdirectory contains compiled JavaScript files (`db.js` and `server.js`). The `models` subdirectory contains
+TypeScript files for the application's data models (`Expense.ts`, `Project.ts`, and `User.ts`).
+
+### `src`
+
+This directory is the heart of the React application. It contains the main entry point for the React application (`App.tsx`)
+and various subdirectories that organize the components and supporting files:
+
+- **assets:** Contains images and icons used throughout the application.
+- **components:** Houses the individual React components that make up the application's UI. Each component has its own
+  subdirectory (e.g., `AuthPage`, `Buttons`, `Expenses`, `Header`, `Home`, `Navigation`, `ProjectDropdown`, `Projects`,
+  and `Statistics`). Each subdirectory contains the component's TypeScript file (e.g., `AuthPage.tsx`), CSS file (
+  e.g., `AuthPage.css`), and any additional files (e.g., `AddExpenseModal.tsx`).
+- **hooks:** Contains custom React hooks that provide reusable state and side effects for the application.
 
 ## Available Scripts
 
 In the project directory, you can run:
 
-### `npm start`
+### `npx react-scripts start`
 
-Runs the app in the development mode.\
+Runs the front end side of the app.
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
 
-### `npm run build`
+### `npx tsx server.ts`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Runs the back end side of the app.
+Open [http://localhost:4000](http://localhost:4000) to view it in the browser.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Environment Variables
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+The project uses environment variables for configuration. Create a `.env` file in the root directory and add the following
+variables:
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove
-the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into
-your project so you have full control over them. All of the commands except `eject` will still work, but they will point to
-the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t
-feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when
-you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+JWT_SECRET_KEY=
