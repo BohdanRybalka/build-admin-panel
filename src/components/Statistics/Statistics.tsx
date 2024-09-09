@@ -88,7 +88,7 @@ export default function Statistics() {
                                 borderColor: borderColors,
                                 hoverBorderColor: hoverBorderColors,
                                 borderWidth: 3,
-                                hoverOffset: 15, // Збільшуємо розмір сегмента при наведенні
+                                hoverOffset: 15,
                             },
                         ],
                     };

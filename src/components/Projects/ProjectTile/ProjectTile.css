@@ -5,7 +5,7 @@
     box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.2);
     transition: 0.3s;
     position: relative;
-    height: 20vh; /* Додайте цей рядок */
+    height: 20vh;
 }
 
 .project-tile:hover {
@@ -15,7 +15,7 @@
 .project-image-container {
     display: flex;
     align-items: center;
-    width: 20%; /* Зменшіть ширину */
+    width: 20%;
 }
 
 .project-image {
@@ -24,7 +24,7 @@
 }
 
 .project-info {
-    width: 80%; /* Збільшіть ширину */
+    width: 80%;
     padding: var(--chakra-space-4);
     font-family: var(--chakra-fonts-body);
     background-color: var(--chakra-colors-grey-300);

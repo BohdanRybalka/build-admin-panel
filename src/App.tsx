@@ -72,7 +72,7 @@ function AppContent() {
             <Flex>
                 {location.pathname !== '/auth' && <SideBar/>}
                 <Box flexGrow={1}>
-                    {location.pathname !== '/auth' && <Header title={getTitle()}/>} {/* видалено user={user} */}
+                    {location.pathname !== '/auth' && <Header title={getTitle()}/>}
                     <Routes>
                         <Route path="/" element={<Home/>}/>
                         <Route path="/expenses" element={<Expenses/>}/>

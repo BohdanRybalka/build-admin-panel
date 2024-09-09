@@ -74,7 +74,7 @@
     font-size: var(--chakra-fontSizes-md);
     color: var(--chakra-colors-grey-900);
     border: 1px solid var(--chakra-colors-grey-400);
-    box-shadow: 0 0 0 2px var(--chakra-colors-grey-400); /* Додає постійне підсвічування покраях */
+    box-shadow: 0 0 0 2px var(--chakra-colors-grey-400);
 }
 
 .fade-enter {

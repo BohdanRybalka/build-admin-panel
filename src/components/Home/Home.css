@@ -23,6 +23,6 @@
     border-radius: var(--chakra-radii-2xl);
     padding: var(--chakra-space-10);
     margin-top: var(--chakra-space-4);
-    margin-left: var(--chakra-space-4); /* Add left margin */
-    margin-right: var(--chakra-space-4); /* Add right margin */
+    margin-left: var(--chakra-space-4);
+    margin-right: var(--chakra-space-4);
 }

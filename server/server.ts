@@ -298,6 +298,7 @@ app.delete('/api/expenses/delete', async (req, res) => {
 
                     const project = await Project.findById(expensesToDelete[0].projectId);
                     if (project) {
+                        // @ts-ignore
                         project.budget -= totalExpensePrice;
                         await project.save();
                     }
