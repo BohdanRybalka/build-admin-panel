@@ -21,7 +21,15 @@ services:
       - mongo
     environment:
       MONGO_URI: mongodb://mongo:27017/ConstructionExpenseManagement
-    volumes:
-      - ./server:/usr/src/app
+  client:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: diploma-client
+    restart: always
+    ports:
+      - '3000:80'
+    depends_on:
+      - server
 volumes:
   mongo_data:
