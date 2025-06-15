@@ -36,7 +36,8 @@
     "start-client": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "test:e2e": "npx playwright test"
   },
   "eslintConfig": {
     "extends": [
@@ -58,6 +59,7 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@playwright/test": "^1.53.0",
     "@types/chroma-js": "^2.4.4",
     "@types/react-chartjs-2": "^2.5.7",
     "@types/react-csv": "^1.1.10",
