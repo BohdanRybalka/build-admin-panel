@@ -97,21 +97,48 @@ test.describe("Project Creation - All Fields", () => {
     await expect(page.locator('text=Minimal Test')).toBeVisible({ timeout: 5000 });
   });
 
-  test("should validate required fields", async ({ page }) => {
+  test("should validate required fields - empty Name", async ({ page }) => {
     // Click 'Add Project' button
     await page.click('button:has-text("Add Project")');
 
     // Wait for modal to be visible
     await expect(page.locator('text=Add New Project')).toBeVisible();
 
-    // Try to submit without filling required fields
+    // Fill only Street and Start Date, leave Name empty
+    await page.fill('input[placeholder="Street"]', "123 Test St");
+    const today = new Date().toISOString().split("T")[0];
+    await page.fill('input[placeholder="Select Date"]', today);
+
+    // Try to submit without Name
     await page.click('button:has-text("Save")');
 
     // Modal should still be visible (submission failed)
     await expect(page.locator('text=Add New Project')).toBeVisible();
 
-    // There might be validation error messages
-    // (This depends on the implementation - adjust selectors as needed)
+    // Should show validation error for Name field
+    await expect(page.locator('text=Project name is required')).toBeVisible();
+  });
+
+  test("should validate required fields - empty Street", async ({ page }) => {
+    // Click 'Add Project' button
+    await page.click('button:has-text("Add Project")');
+
+    // Wait for modal to be visible
+    await expect(page.locator('text=Add New Project')).toBeVisible();
+
+    // Fill only Name and Start Date, leave Street empty
+    await page.fill('input[placeholder="Project Name"]', "Test Project");
+    const today = new Date().toISOString().split("T")[0];
+    await page.fill('input[placeholder="Select Date"]', today);
+
+    // Try to submit without Street
+    await page.click('button:has-text("Save")');
+
+    // Modal should still be visible (submission failed)
+    await expect(page.locator('text=Add New Project')).toBeVisible();
+
+    // Should show validation error for Street field
+    await expect(page.locator('text=Street is required')).toBeVisible();
   });
 
   test("should handle form cancellation", async ({ page }) => {
@@ -162,5 +189,67 @@ test.describe("Project Creation - Field Validation", () => {
     expect(statusOptions).toContain("Active");
     expect(statusOptions).toContain("On Hold");
     expect(statusOptions).toContain("Completed");
+  });
+
+  test("should reject negative budget values", async ({ page }) => {
+    // Fill required fields
+    await page.fill('input[placeholder="Project Name"]', "Budget Test");
+    await page.fill('input[placeholder="Street"]', "456 Oak St");
+    const today = new Date().toISOString().split("T")[0];
+    await page.fill('input[placeholder="Select Date"]', today);
+
+    // Try to enter negative budget
+    await page.fill('input[type="number"][placeholder*="budget" i]', "-1000");
+
+    // Try to submit
+    await page.click('button:has-text("Save")');
+
+    // Modal should still be visible (submission failed)
+    await expect(page.locator('text=Add New Project')).toBeVisible();
+
+    // Should show validation error for budget
+    await expect(page.locator('text=Budget cannot be negative')).toBeVisible();
+  });
+
+  test("should enforce max length on Client field", async ({ page }) => {
+    // Fill required fields
+    await page.fill('input[placeholder="Project Name"]', "Client Test");
+    await page.fill('input[placeholder="Street"]', "789 Pine St");
+    const today = new Date().toISOString().split("T")[0];
+    await page.fill('input[placeholder="Select Date"]', today);
+
+    // Try to enter very long client name (>200 chars)
+    const longClientName = "A".repeat(250);
+    await page.fill('input[placeholder*="client" i]', longClientName);
+
+    // Try to submit
+    await page.click('button:has-text("Save")');
+
+    // The input should be limited to 200 chars by maxLength attribute
+    const clientInput = page.locator('input[placeholder*="client" i]');
+    const actualValue = await clientInput.inputValue();
+
+    // maxLength should prevent entering more than 200 chars
+    expect(actualValue.length).toBeLessThanOrEqual(200);
+  });
+
+  test("should allow Status to be empty (optional field)", async ({ page }) => {
+    // Fill required fields
+    await page.fill('input[placeholder="Project Name"]', "Status Optional Test");
+    await page.fill('input[placeholder="Street"]', "321 Elm St");
+    const today = new Date().toISOString().split("T")[0];
+    await page.fill('input[placeholder="Select Date"]', today);
+
+    // Leave Status field empty (don't select any option)
+    // The status dropdown should allow empty/no selection
+
+    // Try to submit
+    await page.click('button:has-text("Save")');
+
+    // Should succeed - Status is optional
+    await expect(page.locator('text=Add New Project')).not.toBeVisible({ timeout: 5000 });
+
+    // Verify: Project created successfully
+    await expect(page.locator('text=Status Optional Test')).toBeVisible({ timeout: 5000 });
   });
 });

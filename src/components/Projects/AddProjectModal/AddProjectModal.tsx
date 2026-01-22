@@ -42,6 +42,12 @@ interface AddProjectModalProps {
 const AddProjectModal: React.FC<AddProjectModalProps> = (props) => {
     const [isValid, setIsValid] = useState(true);
     const [attemptedSubmit, setAttemptedSubmit] = useState(false);
+    const [errors, setErrors] = useState({
+        name: '',
+        street: '',
+        budget: '',
+        client: ''
+    });
     const nameRef = useRef<HTMLInputElement>(null);
     const [startDate, setStartDate] = useState(new Date());
     const streetRef = useRef<HTMLInputElement>(null);
@@ -56,6 +62,12 @@ const AddProjectModal: React.FC<AddProjectModalProps> = (props) => {
         if (props.isOpen) {
             setIsValid(true);
             setAttemptedSubmit(false);
+            setErrors({
+                name: '',
+                street: '',
+                budget: '',
+                client: ''
+            });
             setBudget('');
             setDeadline(null);
             setClient('');
@@ -67,6 +79,12 @@ const AddProjectModal: React.FC<AddProjectModalProps> = (props) => {
     const handleInputChange = () => {
         setIsValid(true);
         setAttemptedSubmit(false);
+        setErrors({
+            name: '',
+            street: '',
+            budget: '',
+            client: ''
+        });
     };
 
     const handleSave = async () => {
@@ -74,7 +92,40 @@ const AddProjectModal: React.FC<AddProjectModalProps> = (props) => {
         const street = streetRef.current?.value;
         const description = descriptionRef.current?.value || '';
 
-        if (!name || !startDate || !street) {
+        const newErrors = {
+            name: '',
+            street: '',
+            budget: '',
+            client: ''
+        };
+
+        let hasErrors = false;
+
+        // Validate required fields
+        if (!name || name.trim() === '') {
+            newErrors.name = 'Project name is required';
+            hasErrors = true;
+        }
+
+        if (!street || street.trim() === '') {
+            newErrors.street = 'Street is required';
+            hasErrors = true;
+        }
+
+        // Validate budget (no negative values)
+        if (budget && parseFloat(budget) < 0) {
+            newErrors.budget = 'Budget cannot be negative';
+            hasErrors = true;
+        }
+
+        // Validate client length (max 200 chars)
+        if (client && client.length > 200) {
+            newErrors.client = 'Client name must be 200 characters or less';
+            hasErrors = true;
+        }
+
+        if (hasErrors) {
+            setErrors(newErrors);
             setIsValid(false);
             setAttemptedSubmit(true);
             return;
@@ -122,17 +173,17 @@ const AddProjectModal: React.FC<AddProjectModalProps> = (props) => {
                 <ModalHeader className="modal-header">Add new project</ModalHeader>
                 <ModalCloseButton/>
                 <ModalBody className="modal-body">
-                    <FormControl isInvalid={!isValid && attemptedSubmit}>
+                    <FormControl isInvalid={attemptedSubmit && errors.name !== ''}>
                         <FormLabel className="form-label">Project Name</FormLabel>
                         <Input className="input-field" placeholder="Project Name" ref={nameRef} required
                                onChange={handleInputChange}/>
-                        {!isValid && attemptedSubmit && <FormErrorMessage>Field is required</FormErrorMessage>}
+                        {attemptedSubmit && errors.name && <FormErrorMessage>{errors.name}</FormErrorMessage>}
                     </FormControl>
-                    <FormControl mt={4} isInvalid={!isValid && attemptedSubmit}>
+                    <FormControl mt={4} isInvalid={attemptedSubmit && errors.street !== ''}>
                         <FormLabel className="form-label">Street</FormLabel>
                         <Input className="input-field" placeholder="Street" ref={streetRef} required
                                onChange={handleInputChange}/>
-                        {!isValid && attemptedSubmit && <FormErrorMessage>Field is required</FormErrorMessage>}
+                        {attemptedSubmit && errors.street && <FormErrorMessage>{errors.street}</FormErrorMessage>}
                     </FormControl>
                     <FormControl mt={4} isInvalid={!isValid && attemptedSubmit}>
                         <FormLabel className="form-label">Building Start Date</FormLabel>
@@ -149,10 +200,11 @@ const AddProjectModal: React.FC<AddProjectModalProps> = (props) => {
                                onChange={handleInputChange}/>
                         {!isValid && attemptedSubmit && <FormErrorMessage>Field is required</FormErrorMessage>}
                     </FormControl>
-                    <FormControl mt={4}>
+                    <FormControl mt={4} isInvalid={attemptedSubmit && errors.budget !== ''}>
                         <FormLabel className="form-label">Budget</FormLabel>
                         <Input className="input-field" placeholder="Budget" type="number" value={budget}
-                               onChange={(e) => setBudget(e.target.value)}/>
+                               onChange={(e) => setBudget(e.target.value)} min="0" step="0.01"/>
+                        {attemptedSubmit && errors.budget && <FormErrorMessage>{errors.budget}</FormErrorMessage>}
                     </FormControl>
                     <FormControl mt={4}>
                         <FormLabel className="form-label">Deadline</FormLabel>
@@ -163,10 +215,11 @@ const AddProjectModal: React.FC<AddProjectModalProps> = (props) => {
                             placeholderText="Select deadline"
                         />
                     </FormControl>
-                    <FormControl mt={4}>
+                    <FormControl mt={4} isInvalid={attemptedSubmit && errors.client !== ''}>
                         <FormLabel className="form-label">Client</FormLabel>
                         <Input className="input-field" placeholder="Client" value={client}
-                               onChange={(e) => setClient(e.target.value)}/>
+                               onChange={(e) => setClient(e.target.value)} maxLength={200}/>
+                        {attemptedSubmit && errors.client && <FormErrorMessage>{errors.client}</FormErrorMessage>}
                     </FormControl>
                     <FormControl mt={4}>
                         <FormLabel className="form-label">Status</FormLabel>
