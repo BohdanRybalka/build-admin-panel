@@ -1,0 +1,39 @@
+{
+  "sandbox": {
+    "enabled": true,
+    "autoAllowBashIfSandboxed": true
+  },
+  "permissions": {
+    "defaultMode": "acceptEdits",
+    "allow": [
+      "Read(./**)",
+      "Write(./**)",
+      "Edit(./**)",
+      "Glob(./**)",
+      "Grep(./**)",
+      "Read(C:\\Users\\Admin\\Desktop\\University\\Bachelor\\4_Course\\Diploma\\build-admin-panel\\.auto-claude\\worktrees\\tasks\\001-need-to-improve-user-interface-for-creating-projec/**)",
+      "Write(C:\\Users\\Admin\\Desktop\\University\\Bachelor\\4_Course\\Diploma\\build-admin-panel\\.auto-claude\\worktrees\\tasks\\001-need-to-improve-user-interface-for-creating-projec/**)",
+      "Edit(C:\\Users\\Admin\\Desktop\\University\\Bachelor\\4_Course\\Diploma\\build-admin-panel\\.auto-claude\\worktrees\\tasks\\001-need-to-improve-user-interface-for-creating-projec/**)",
+      "Glob(C:\\Users\\Admin\\Desktop\\University\\Bachelor\\4_Course\\Diploma\\build-admin-panel\\.auto-claude\\worktrees\\tasks\\001-need-to-improve-user-interface-for-creating-projec/**)",
+      "Grep(C:\\Users\\Admin\\Desktop\\University\\Bachelor\\4_Course\\Diploma\\build-admin-panel\\.auto-claude\\worktrees\\tasks\\001-need-to-improve-user-interface-for-creating-projec/**)",
+      "Read(C:\\Users\\Admin\\Desktop\\University\\Bachelor\\4_Course\\Diploma\\build-admin-panel\\.auto-claude\\worktrees\\tasks\\001-need-to-improve-user-interface-for-creating-projec\\.auto-claude\\specs\\001-need-to-improve-user-interface-for-creating-projec/**)",
+      "Write(C:\\Users\\Admin\\Desktop\\University\\Bachelor\\4_Course\\Diploma\\build-admin-panel\\.auto-claude\\worktrees\\tasks\\001-need-to-improve-user-interface-for-creating-projec\\.auto-claude\\specs\\001-need-to-improve-user-interface-for-creating-projec/**)",
+      "Edit(C:\\Users\\Admin\\Desktop\\University\\Bachelor\\4_Course\\Diploma\\build-admin-panel\\.auto-claude\\worktrees\\tasks\\001-need-to-improve-user-interface-for-creating-projec\\.auto-claude\\specs\\001-need-to-improve-user-interface-for-creating-projec/**)",
+      "Read(C:\\Users\\Admin\\Desktop\\University\\Bachelor\\4_Course\\Diploma\\build-admin-panel\\.auto-claude/**)",
+      "Write(C:\\Users\\Admin\\Desktop\\University\\Bachelor\\4_Course\\Diploma\\build-admin-panel\\.auto-claude/**)",
+      "Edit(C:\\Users\\Admin\\Desktop\\University\\Bachelor\\4_Course\\Diploma\\build-admin-panel\\.auto-claude/**)",
+      "Glob(C:\\Users\\Admin\\Desktop\\University\\Bachelor\\4_Course\\Diploma\\build-admin-panel\\.auto-claude/**)",
+      "Grep(C:\\Users\\Admin\\Desktop\\University\\Bachelor\\4_Course\\Diploma\\build-admin-panel\\.auto-claude/**)",
+      "Bash(*)",
+      "WebFetch(*)",
+      "WebSearch(*)",
+      "mcp__context7__resolve-library-id(*)",
+      "mcp__context7__get-library-docs(*)",
+      "mcp__graphiti-memory__search_nodes(*)",
+      "mcp__graphiti-memory__search_facts(*)",
+      "mcp__graphiti-memory__add_episode(*)",
+      "mcp__graphiti-memory__get_episodes(*)",
+      "mcp__graphiti-memory__get_entity_edge(*)"
+    ]
+  }
+}

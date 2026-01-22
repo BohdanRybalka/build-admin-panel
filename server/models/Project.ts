@@ -10,6 +10,10 @@ const ProjectSchema = new mongoose.Schema({
     },
     street: String,
     description: String,
+    deadline: Date,
+    client: String,
+    status: String,
+    tags: [String],
 });
 
 export default mongoose.model('Project', ProjectSchema);
