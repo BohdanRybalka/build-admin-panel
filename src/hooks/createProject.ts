@@ -5,6 +5,11 @@ interface ProjectData {
     startDate: Date;
     street: string;
     description: string;
+    budget?: number;
+    deadline?: Date;
+    client?: string;
+    status?: string;
+    tags?: string[];
 }
 
 export async function createProject(projectData: ProjectData) {
