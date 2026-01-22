@@ -22,10 +22,14 @@ interface Project {
     _id: string;
     name: string;
     startDate: Date;
-    budget: number;
+    budget?: number;
     userId: string;
     street: string;
     description: string;
+    deadline?: Date;
+    client?: string;
+    status: string;
+    tags?: string[];
 }
 
 interface AddProjectModalProps {

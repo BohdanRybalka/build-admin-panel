@@ -3,23 +3,23 @@
   "spec": "001-need-to-improve-user-interface-for-creating-projec",
   "state": "building",
   "subtasks": {
-    "completed": 0,
+    "completed": 2,
     "total": 9,
     "in_progress": 1,
     "failed": 0
   },
   "phase": {
-    "current": "Backend - Database Model & API",
+    "current": "Frontend - UI Form Enhancement",
     "id": null,
-    "total": 2
+    "total": 3
   },
   "workers": {
     "active": 0,
     "max": 1
   },
   "session": {
-    "number": 1,
+    "number": 3,
     "started_at": "2026-01-22T21:57:32.604157"
   },
-  "last_update": "2026-01-22T21:57:32.682658"
+  "last_update": "2026-01-22T22:01:58.742260"
 }

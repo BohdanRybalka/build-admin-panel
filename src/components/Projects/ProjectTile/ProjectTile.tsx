@@ -6,7 +6,7 @@ import houseIcon from '../../../assets/houseIcons/estateIcon.png';
 interface ProjectTileProps {
     name: string;
     startDate: Date;
-    budget: number;
+    budget?: number;
     isSelected: boolean;
     onSelectedChange: (selected: boolean) => void;
     isSelecting: boolean;
@@ -37,7 +37,7 @@ const ProjectTile: React.FC<ProjectTileProps> = ({
                     <Heading as="h3" size="md" className="project-title">{name}</Heading>
                     <Text className="date">Start Date: {date.toLocaleDateString()}</Text>
                     <Text className="street">Street: {street}</Text>
-                    <Text className="budget">Budget: ${budget}</Text>
+                    <Text className="budget">Budget: {budget !== undefined ? `$${budget}` : 'N/A'}</Text>
                     <Text className="description">Description: {description}</Text>
                 </Box>
                 {isSelecting && (
