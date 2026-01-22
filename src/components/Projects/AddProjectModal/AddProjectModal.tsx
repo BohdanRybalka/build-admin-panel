@@ -11,7 +11,8 @@ import {
     FormControl,
     FormLabel,
     Input,
-    FormErrorMessage
+    FormErrorMessage,
+    Select
 } from "@chakra-ui/react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -45,11 +46,21 @@ const AddProjectModal: React.FC<AddProjectModalProps> = (props) => {
     const [startDate, setStartDate] = useState(new Date());
     const streetRef = useRef<HTMLInputElement>(null);
     const descriptionRef = useRef<HTMLInputElement>(null);
+    const [budget, setBudget] = useState('');
+    const [deadline, setDeadline] = useState<Date | null>(null);
+    const [client, setClient] = useState('');
+    const [status, setStatus] = useState('');
+    const [tags, setTags] = useState('');
 
     useEffect(() => {
         if (props.isOpen) {
             setIsValid(true);
             setAttemptedSubmit(false);
+            setBudget('');
+            setDeadline(null);
+            setClient('');
+            setStatus('');
+            setTags('');
         }
     }, [props.isOpen]);
 
@@ -69,12 +80,28 @@ const AddProjectModal: React.FC<AddProjectModalProps> = (props) => {
             return;
         }
 
-        const projectData = {
+        const projectData: any = {
             name,
             startDate,
             street,
             description,
         };
+
+        if (budget) {
+            projectData.budget = parseFloat(budget);
+        }
+        if (deadline) {
+            projectData.deadline = deadline;
+        }
+        if (client) {
+            projectData.client = client;
+        }
+        if (status) {
+            projectData.status = status;
+        }
+        if (tags) {
+            projectData.tags = tags.split(',').map(tag => tag.trim()).filter(tag => tag);
+        }
 
         const newProject = await createProject(projectData);
 
@@ -121,6 +148,40 @@ const AddProjectModal: React.FC<AddProjectModalProps> = (props) => {
                         <Input className="input-field" placeholder="Description" ref={descriptionRef} required
                                onChange={handleInputChange}/>
                         {!isValid && attemptedSubmit && <FormErrorMessage>Field is required</FormErrorMessage>}
+                    </FormControl>
+                    <FormControl mt={4}>
+                        <FormLabel className="form-label">Budget</FormLabel>
+                        <Input className="input-field" placeholder="Budget" type="number" value={budget}
+                               onChange={(e) => setBudget(e.target.value)}/>
+                    </FormControl>
+                    <FormControl mt={4}>
+                        <FormLabel className="form-label">Deadline</FormLabel>
+                        <DatePicker
+                            className="datepicker"
+                            selected={deadline}
+                            onChange={(date: Date | null) => setDeadline(date)}
+                            placeholderText="Select deadline"
+                        />
+                    </FormControl>
+                    <FormControl mt={4}>
+                        <FormLabel className="form-label">Client</FormLabel>
+                        <Input className="input-field" placeholder="Client" value={client}
+                               onChange={(e) => setClient(e.target.value)}/>
+                    </FormControl>
+                    <FormControl mt={4}>
+                        <FormLabel className="form-label">Status</FormLabel>
+                        <Select className="input-field" placeholder="Select status" value={status}
+                                onChange={(e) => setStatus(e.target.value)}>
+                            <option value="Planning">Planning</option>
+                            <option value="Active">Active</option>
+                            <option value="On Hold">On Hold</option>
+                            <option value="Completed">Completed</option>
+                        </Select>
+                    </FormControl>
+                    <FormControl mt={4}>
+                        <FormLabel className="form-label">Tags</FormLabel>
+                        <Input className="input-field" placeholder="Tags (comma-separated)" value={tags}
+                               onChange={(e) => setTags(e.target.value)}/>
                     </FormControl>
                 </ModalBody>
                 <ModalFooter>

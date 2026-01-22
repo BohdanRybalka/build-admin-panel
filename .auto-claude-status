@@ -3,7 +3,7 @@
   "spec": "001-need-to-improve-user-interface-for-creating-projec",
   "state": "building",
   "subtasks": {
-    "completed": 2,
+    "completed": 3,
     "total": 9,
     "in_progress": 1,
     "failed": 0
@@ -18,8 +18,8 @@
     "max": 1
   },
   "session": {
-    "number": 3,
+    "number": 4,
     "started_at": "2026-01-22T21:57:32.604157"
   },
-  "last_update": "2026-01-22T22:01:58.742260"
+  "last_update": "2026-01-22T22:04:51.688044"
 }
