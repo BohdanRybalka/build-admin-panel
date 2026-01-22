@@ -166,9 +166,20 @@ app.post('/api/projects/create', async (req, res) => {
             const user = decoded as JwtPayload;
             if ('id' in user) {
                 try {
-                    const {name, startDate, street, description} = req.body;
+                    const {name, startDate, street, description, deadline, client, status, tags} = req.body;
                     const budget = req.body.budget || 0;
-                    const newProject = new Project({name, startDate, street, description, userId: user.id, budget});
+                    const newProject = new Project({
+                        name,
+                        startDate,
+                        street,
+                        description,
+                        userId: user.id,
+                        budget,
+                        deadline,
+                        client,
+                        status,
+                        tags
+                    });
                     await newProject.save();
                     res.status(201).send(newProject);
                 } catch (error) {
