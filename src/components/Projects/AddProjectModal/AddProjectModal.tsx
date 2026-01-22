@@ -26,10 +26,10 @@ interface Project {
     budget?: number;
     userId: string;
     street: string;
-    description: string;
+    description?: string;
     deadline?: Date;
     client?: string;
-    status: string;
+    status?: string;
     tags?: string[];
 }
 

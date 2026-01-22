@@ -11,7 +11,7 @@ interface ProjectTileProps {
     onSelectedChange: (selected: boolean) => void;
     isSelecting: boolean;
     street: string;
-    description: string;
+    description?: string;
 }
 
 const ProjectTile: React.FC<ProjectTileProps> = ({
@@ -38,7 +38,7 @@ const ProjectTile: React.FC<ProjectTileProps> = ({
                     <Text className="date">Start Date: {date.toLocaleDateString()}</Text>
                     <Text className="street">Street: {street}</Text>
                     <Text className="budget">Budget: {budget !== undefined ? `$${budget}` : 'N/A'}</Text>
-                    <Text className="description">Description: {description}</Text>
+                    <Text className="description">Description: {description || 'N/A'}</Text>
                 </Box>
                 {isSelecting && (
                     <Checkbox
