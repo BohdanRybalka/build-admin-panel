@@ -1,6 +1,8 @@
+import { getApiUrl } from '../config/api';
+
 export const createExpense = async (expenseData: { name: string; price: number; type: string; projectId: string; }) => {
     try {
-        const response = await fetch('http://localhost:4000/api/expenses/create', {
+        const response = await fetch(getApiUrl('expenses/create'), {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

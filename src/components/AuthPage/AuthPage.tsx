@@ -12,6 +12,7 @@ import './AuthPage.css';
 import {CSSTransition, SwitchTransition} from 'react-transition-group';
 import axios, {AxiosError} from "axios";
 import {useNavigate} from 'react-router-dom';
+import { API_BASE_URL } from '../../config/api';
 
 
 export default function AuthPage() {
@@ -65,9 +66,12 @@ export default function AuthPage() {
 
     const handleSubmit = async () => {
         if (validateForm()) {
+            // Auth endpoints are at root level, not under /api
+            const authBaseUrl = API_BASE_URL.replace('/api', '');
+
             if (authMode === 'register') {
                 try {
-                    const response = await axios.post('http://localhost:4000/register', {username: email, password});
+                    const response = await axios.post(`${authBaseUrl}/register`, {username: email, password});
                     localStorage.setItem('token', response.data.token);
                     navigate('/');
                 } catch (error) {
@@ -77,7 +81,7 @@ export default function AuthPage() {
                 }
             } else if (authMode === 'login') {
                 try {
-                    const response = await axios.post('http://localhost:4000/login', {username: email, password});
+                    const response = await axios.post(`${authBaseUrl}/login`, {username: email, password});
                     localStorage.setItem('token', response.data.token);
                     navigate('/');
                 } catch (error) {

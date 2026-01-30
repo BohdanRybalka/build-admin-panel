@@ -1,54 +1,260 @@
 # Build Admin Panel
 
-This project is a web application built using. The purpose of this project is to create a user-friendly and responsive web
-application for managing projects, expenses, and users.
+A full-stack **Construction Expense Tracker** web application built with React, Node.js/Express, and MongoDB. This application allows users to manage construction projects, track expenses, and view statistics - all containerized and ready to run without any local dependencies.
 
-## Project Structure
+## 🚀 Quick Start (Docker - Recommended)
 
-The project is organized into three main directories: `public`, `server`, and `src`.
+**No MongoDB or Node.js installation required!** Everything runs in Docker containers.
 
-### `public`
+### Prerequisites
 
-This directory contains static assets such as the main HTML file (`index.html`), `manifest.json`, and `robots.txt`.
+- [Docker](https://www.docker.com/get-started) (20.10 or higher)
+- [Docker Compose](https://docs.docker.com/compose/install/) (v2.0 or higher)
 
-### `server`
+### Running the Application
 
-This directory holds the server-side logic, including the main entry point for the server-side application (`server.ts`).
-The `dist` subdirectory contains compiled JavaScript files (`db.js` and `server.js`). The `models` subdirectory contains
-TypeScript files for the application's data models (`Expense.ts`, `Project.ts`, and `User.ts`).
+1. **Clone the repository:**
+   ```bash
+   git clone <repository-url>
+   cd build-admin-panel
+   ```
 
-### `src`
+2. **Start all services:**
+   ```bash
+   docker compose up --build
+   ```
 
-This directory is the heart of the React application. It contains the main entry point for the React application (`App.tsx`)
-and various subdirectories that organize the components and supporting files:
+   This single command will:
+   - Start MongoDB container (with persistent data)
+   - Build and start the backend API server
+   - Build and start the frontend with Nginx
+   - Configure automatic service health checks
+   - Set up networking between all containers
 
-- **assets:** Contains images and icons used throughout the application.
-- **components:** Houses the individual React components that make up the application's UI. Each component has its own
-  subdirectory (e.g., `AuthPage`, `Buttons`, `Expenses`, `Header`, `Home`, `Navigation`, `ProjectDropdown`, `Projects`,
-  and `Statistics`). Each subdirectory contains the component's TypeScript file (e.g., `AuthPage.tsx`), CSS file (
-  e.g., `AuthPage.css`), and any additional files (e.g., `AddExpenseModal.tsx`).
-- **hooks:** Contains custom React hooks that provide reusable state and side effects for the application.
+3. **Access the application:**
+   - **Frontend:** http://localhost:3000
+   - **Backend API:** http://localhost:4000
 
-## Available Scripts
+4. **Stop the application:**
+   ```bash
+   docker compose down
+   ```
 
-In the project directory, you can run:
+5. **Stop and remove all data:**
+   ```bash
+   docker compose down -v
+   ```
 
-### `npx react-scripts start`
+### Service Architecture
 
-Runs the front end side of the app.
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+```
+┌─────────────────────────────────────────────────────┐
+│  Browser (localhost:3000)                           │
+└────────────────────┬────────────────────────────────┘
+                     │
+                     ▼
+         ┌───────────────────────┐
+         │  Nginx (Client)       │
+         │  - Serves React app   │
+         │  - Proxies API calls  │
+         └──────────┬────────────┘
+                    │
+                    ▼
+         ┌───────────────────────┐
+         │  Express (Server)     │
+         │  - REST API           │
+         │  - JWT Auth           │
+         └──────────┬────────────┘
+                    │
+                    ▼
+         ┌───────────────────────┐
+         │  MongoDB (Database)   │
+         │  - Persistent storage │
+         └───────────────────────┘
+```
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## 📁 Project Structure
 
-### `npx tsx server.ts`
+```
+build-admin-panel/
+├── /src/                    # React frontend (TypeScript)
+│   ├── components/          # UI components
+│   ├── hooks/               # Custom React hooks
+│   ├── config/              # API configuration
+│   └── assets/              # Images and icons
+├── /server/                 # Node.js/Express backend
+│   ├── models/              # MongoDB schemas
+│   ├── server.ts            # Express server
+│   └── db.ts                # Database connection
+├── /public/                 # Static assets
+├── docker-compose.yml       # Container orchestration
+├── Dockerfile               # Frontend container
+├── nginx.conf               # Nginx configuration
+└── README.md
+```
 
-Runs the back end side of the app.
-Open [http://localhost:4000](http://localhost:4000) to view it in the browser.
+## 🛠️ Development
 
-## Environment Variables
+### Local Development (Without Docker)
 
-The project uses environment variables for configuration. Create a `.env` file in the root directory and add the following
-variables:
+If you prefer to run services locally:
 
-JWT_SECRET_KEY=
+#### Prerequisites
+- Node.js 20+
+- MongoDB 6.0+
+- npm or yarn
+
+#### Setup
+
+1. **Start MongoDB:**
+   ```bash
+   mongod --dbpath /path/to/data
+   ```
+
+2. **Start Backend:**
+   ```bash
+   cd server
+   npm install
+   npm run start-server
+   ```
+   Backend runs on http://localhost:4000
+
+3. **Start Frontend:**
+   ```bash
+   npm install
+   npm run start-client
+   ```
+   Frontend runs on http://localhost:3000
+
+## 🔐 Environment Variables
+
+### Backend (`/server/.env`)
+```env
+JWT_SECRET_KEY=V3ryC0mpl3xS3cr3tK3yTh4t1sH4rdT0Gu3ss
+PORT=4000
+MONGO_URI=mongodb://localhost:27017/ConstructionExpenseManagement
+```
+
+### Frontend (Optional - defaults work for Docker)
+```env
+REACT_APP_API_URL=/api
+```
+
+## 📦 Available Scripts
+
+### Frontend
+- `npm run start-client` - Start development server
+- `npm run build` - Build for production
+- `npm test` - Run tests
+- `npm run test:e2e` - Run Playwright E2E tests
+
+### Backend
+- `npm run start-server` - Start development server (uses tsx)
+
+### Docker
+- `docker compose up` - Start all services
+- `docker compose up --build` - Rebuild and start
+- `docker compose down` - Stop all services
+- `docker compose logs -f` - View logs
+- `docker compose ps` - View running containers
+
+## 🧪 Testing
+
+### E2E Tests with Playwright
+```bash
+npm run test:e2e
+```
+
+Tests are located in `/tests/frontend.spec.ts`
+
+## 🔧 Technology Stack
+
+### Frontend
+- React 18.3 with TypeScript
+- Chakra UI for components
+- React Router for navigation
+- Axios for HTTP requests
+- Chart.js for statistics visualization
+
+### Backend
+- Express 4.19 with TypeScript
+- Mongoose for MongoDB ODM
+- JWT for authentication
+- bcrypt for password hashing
+
+### Infrastructure
+- Docker & Docker Compose
+- Nginx for reverse proxy
+- MongoDB 6.0 for database
+
+## 📝 API Endpoints
+
+### Authentication
+- `POST /login` - User login
+- `POST /register` - User registration
+
+### Protected Routes (Require JWT)
+- `GET /api/user` - Get user info
+- `GET /api/projects` - Get all projects
+- `POST /api/projects/create` - Create project
+- `DELETE /api/projects/delete` - Delete projects
+- `GET /api/expenses/:projectId` - Get expenses
+- `POST /api/expenses/create` - Create expense
+- `DELETE /api/expenses/delete` - Delete expenses
+
+## 🔒 Security Features
+
+- JWT-based authentication (1-hour token expiration)
+- Bcrypt password hashing (10 salt rounds)
+- CORS protection
+- Environment variable configuration
+- Nginx reverse proxy
+
+## 🐛 Troubleshooting
+
+### Port Already in Use
+If you see "port already allocated" errors:
+```bash
+docker compose down
+# Check for processes using ports 3000, 4000, or 27017
+lsof -i :3000
+lsof -i :4000
+lsof -i :27017
+```
+
+### MongoDB Connection Issues
+If the backend can't connect to MongoDB:
+```bash
+# Check MongoDB container is running
+docker compose ps
+
+# View MongoDB logs
+docker compose logs mongo
+
+# Restart services
+docker compose restart
+```
+
+### Frontend Can't Reach Backend
+- Ensure all containers are healthy: `docker compose ps`
+- Check nginx logs: `docker compose logs client`
+- Verify API configuration in `src/config/api.ts`
+
+## 📚 Additional Resources
+
+- [React Documentation](https://react.dev/)
+- [Express Documentation](https://expressjs.com/)
+- [MongoDB Documentation](https://docs.mongodb.com/)
+- [Docker Documentation](https://docs.docker.com/)
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Open a Pull Request
+
+## 📄 License
+
+MIT License

@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import {useLocation, Navigate} from 'react-router-dom';
 import axios from 'axios';
+import { getApiUrl } from '../config/api';
 
 export default function useAuthRedirect() {
     const location = useLocation();
@@ -13,7 +14,7 @@ export default function useAuthRedirect() {
             return;
         }
 
-        axios.get('http://localhost:4000/api/user', {
+        axios.get(getApiUrl('user'), {
             headers: {
                 'Authorization': `Bearer ${token}`
             }

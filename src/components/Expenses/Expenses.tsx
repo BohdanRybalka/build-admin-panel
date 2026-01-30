@@ -13,6 +13,7 @@ import ProjectDropdown from "../ProjectDropdown/ProjectDropdown";
 import {fetchProjectsFromAPI} from "../../hooks/fetchProjectsFromAPI";
 import ExportToCSVBtn from "../Buttons/ExportToCSVBtn/ExportToCSVBtn";
 import {FaDollarSign} from "react-icons/fa6";
+import { getApiUrl } from '../../config/api';
 
 interface Expense {
     _id: string;
@@ -48,7 +49,7 @@ export default function Expenses() {
         if (!authRedirect) {
             const fetchExpenses = async () => {
                 const token = localStorage.getItem('token');
-                const response = await axios.get(`http://localhost:4000/api/expenses/${selectedProject.id}`, {
+                const response = await axios.get(getApiUrl(`expenses/${selectedProject.id}`), {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -74,7 +75,7 @@ export default function Expenses() {
 
         const token = localStorage.getItem('token');
 
-        axios.get(`http://localhost:4000/api/expenses/${selectedProjectId}`, {
+        axios.get(getApiUrl(`expenses/${selectedProjectId}`), {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -106,7 +107,7 @@ export default function Expenses() {
     const handleDeleteExpenses = async () => {
         const token = localStorage.getItem('token');
         const expenseIds = selectedExpenses.map(index => expenses[index]._id);
-        await axios.delete('http://localhost:4000/api/expenses/delete', {
+        await axios.delete(getApiUrl('expenses/delete'), {
             headers: {
                 'Authorization': `Bearer ${token}`
             },
