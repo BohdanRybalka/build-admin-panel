@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Box, Select} from '@chakra-ui/react';
 import axios from 'axios';
 import './ProjectDropdown.css';
+import { getApiUrl } from '../../config/api';
 
 interface HouseDropdownProps {
     onHouseChange: (houseId: string) => void;
@@ -18,7 +19,7 @@ const ProjectDropdown: React.FC<HouseDropdownProps> = ({onHouseChange}) => {
     useEffect(() => {
         const fetchProjects = async () => {
             const token = localStorage.getItem('token');
-            const response = await axios.get('http://localhost:4000/api/projects', {
+            const response = await axios.get(getApiUrl('projects'), {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

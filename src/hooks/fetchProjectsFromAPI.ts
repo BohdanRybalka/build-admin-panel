@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { getApiUrl } from '../config/api';
 
 export const fetchProjectsFromAPI = async () => {
     const token = localStorage.getItem('token');
@@ -7,7 +8,7 @@ export const fetchProjectsFromAPI = async () => {
     }
 
     try {
-        const response = await axios.get('http://localhost:4000/api/projects', {
+        const response = await axios.get(getApiUrl('projects'), {
             headers: {
                 'Authorization': `Bearer ${token}`
             }

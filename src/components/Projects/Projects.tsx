@@ -9,6 +9,7 @@ import DeleteBtn from "../Buttons/DeleteBtn/DeleteBtn";
 import useAuthRedirect from "../../hooks/useAuthRedirect";
 import axios from "axios";
 import mongoose from "mongoose";
+import { getApiUrl } from '../../config/api';
 
 interface Project {
     _id: string;
@@ -36,7 +37,7 @@ export default function Projects() {
             return;
         }
 
-        axios.get('http://localhost:4000/api/projects', {
+        axios.get(getApiUrl('projects'), {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -85,7 +86,7 @@ export default function Projects() {
         const projectIds = selectedProjects.map(index => new mongoose.Types.ObjectId(projects[index]._id));
 
         try {
-            await axios.delete('http://localhost:4000/api/projects/delete', {
+            await axios.delete(getApiUrl('projects/delete'), {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 },

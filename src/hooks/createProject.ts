@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { getApiUrl } from '../config/api';
 
 interface ProjectData {
     name: string;
@@ -10,7 +11,7 @@ interface ProjectData {
 export async function createProject(projectData: ProjectData) {
     const token = localStorage.getItem('token');
     try {
-        const response = await axios.post('http://localhost:4000/api/projects/create', projectData, {
+        const response = await axios.post(getApiUrl('projects/create'), projectData, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }

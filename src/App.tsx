@@ -11,17 +11,16 @@ import AuthPage from "./components/AuthPage/AuthPage";
 import {User, UserContext} from './UserContext';
 import axios from "axios";
 import Statistics from "./components/Statistics/Statistics";
+import { getApiUrl } from './config/api';
 
 function AppContent() {
     const [user, setUser] = useState<User | null>(null);
     const location = useLocation();
 
-    const API_URL = 'http://localhost:4000/api/user';
-
     const fetchUser = async () => {
         const token = localStorage.getItem('token');
         try {
-            const response = await axios.get(API_URL, {
+            const response = await axios.get(getApiUrl('user'), {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

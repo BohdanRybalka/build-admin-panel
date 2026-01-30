@@ -9,6 +9,7 @@ import ProjectDropdown from "../ProjectDropdown/ProjectDropdown";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import {Legend} from 'chart.js';
 import chroma from 'chroma-js';
+import { getApiUrl } from '../../config/api';
 
 Chart.register(Legend);
 Chart.register(ArcElement, CategoryScale, DoughnutController, ChartDataLabels);
@@ -51,7 +52,7 @@ export default function Statistics() {
     useEffect(() => {
         const token = localStorage.getItem('token');
 
-        axios.get('http://localhost:4000/api/projects', {
+        axios.get(getApiUrl('projects'), {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -68,7 +69,7 @@ export default function Statistics() {
         if (selectedProject) {
             const token = localStorage.getItem('token');
 
-            axios.get(`http://localhost:4000/api/expenses/${selectedProject}`, {
+            axios.get(getApiUrl(`expenses/${selectedProject}`), {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
